@@ -1,13 +1,32 @@
 security:
+    encoders:
+        App\Entity\User:
+            algorithm: argon2i
+            memory_cost: 16384
+            time_cost: 2
+            threads: 4
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory: { memory: ~ }
+        in_database:
+            entity:
+                class: App\Entity\User
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: true
+            provider: in_database
+
+            form_login:
+                login_path: login_page
+                check_path: login_page
+
+            logout:
+                path: logout_page
+                target: main_page
 
             # activate different ways to authenticate
 
