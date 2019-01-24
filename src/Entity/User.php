@@ -65,6 +65,7 @@ class User implements UserInterface
      * @Assert\EqualTo(propertyPath="password", message="Votre mot de passe doit être identique")
      */
     public $confirm_password;
+    public $confirm_email;
 
     /**
      * @ORM\Column(type="boolean")
@@ -126,6 +127,7 @@ class User implements UserInterface
 
     public function getAdresse(): ?string
     {
+
         return $this->adresse;
     }
 

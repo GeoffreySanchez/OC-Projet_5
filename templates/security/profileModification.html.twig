@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <h1>Vous voulez modifier vos informations personnelles ?</h1>
+    <p>Remplissez le formulaire suivant en renseignant les champs que vous souhaitez</p>
+    <p>les champs Adresse postale et Adresse email sont pré-remplit avec vos informations actuelles, veuillez les modifier si nécessaire</p>
+
+    {{ form_start(form) }}
+    <div>
+        {{ form_row(form.adresse, {'label': 'Adresse postale', 'attr': {'placeholder': 'Votre nouvelle adresse postale'}}) }}
+    </div>
+    <hr>
+    <div>
+        {{ form_row(form.email, {'label': 'Adresse email', 'attr': {'placeholder': 'Votre adresse email'}}) }}
+        {{ form_row(form.confirm_email, {'label': 'Nouvelle adresse email', 'attr': {'placeholder': 'Confirmez votre nouvelle adresse email'}}) }}
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-success">Modification</button>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
