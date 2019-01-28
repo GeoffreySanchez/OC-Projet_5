@@ -1,0 +1,22 @@
+{% extends  'base.html.twig'%}
+
+{% block body %}
+
+    <h1>Administration</h1>
+    <p>Cette section vous permet de réaliser l'intégralité des fonctions d'administration de l'application et de ses membres.</p>
+    <ul>
+        <li>
+            <a href="{{ path('adminUser_page') }}">Administration des membres</a>
+        </li>
+        <li>
+            <a href="#">Ajouter un lot</a>
+        </li>
+        <li>
+            <a href="#">Modifier un lot</a>
+        </li>
+        <li>
+            <a href="#">Modifier les options de création</a>
+        </li>
+    </ul>
+
+{% endblock %}

@@ -2,21 +2,20 @@
 
 {% block body %}
     <h1>Bienvenue sur votre espace privé {{ user.username }}</h1>
-    <p>email: {{ user.adresse }}</p>
 
-    {% if user.rank == true %}
+    {% if user.active == false %}
         <p>Veuillez valider votre compte avec le lien reçu par mail pour pouvoir utiliser l'intégralité des fonctionnalité du site.</p>
-        {% else %}
-            <div>
-                <p>Avec votre espace personnelle, vous avez la possibilité de modifier vos données personnelles ou acheter des tickets supplémentaires.</p>
-                <ul>
-                    <li>
-                        <a href="{{ path('profileModification_page') }}">Modifier mes informations personnelles</a>
-                    </li>
-                    <li>
-                        <a href="#">Acheter des tickets !</a>
-                    </li>
-                </ul>
-            </div>
+    {% else %}
+        <div>
+            <p>Avec votre espace personnelle, vous avez la possibilité de modifier vos données personnelles ou acheter des tickets supplémentaires.</p>
+            <ul>
+                <li>
+                    <a href="{{ path('profileModification_page') }}">Modifier mes informations personnelles</a>
+                </li>
+                <li>
+                    <a href="#">Acheter des tickets !</a>
+                </li>
+            </ul>
+        </div>
     {% endif %}
 {% endblock %}

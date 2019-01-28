@@ -65,12 +65,19 @@ class User implements UserInterface
      * @Assert\EqualTo(propertyPath="password", message="Votre mot de passe doit être identique")
      */
     public $confirm_password;
+
     public $confirm_email;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $rank = false;
+    private $active = false;
+
+    /**
+     * @var array
+     * @ORM\Column(type="string", length=255)
+     */
+    private $roles = 'ROLE_VISITOR';
 
     public function getId(): ?int
     {
@@ -150,14 +157,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRank(): ?string
+    public function getActive(): ?string
     {
-        return $this->rank;
+        return $this->active;
     }
 
-    public function setRank(string $rank): self
+    public function setActive(string $active): self
     {
-        $this->rank = $rank;
+        $this->active = $active;
 
         return $this;
     }
@@ -166,12 +173,22 @@ class User implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
+
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
     }
-    public function getRoles()
+
+
+    public function getRoles():  ?array
     {
-        return ['ROLE_USER'];
+        return [$this->roles];
+    }
+
+    public function setRoles(string $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 }

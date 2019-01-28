@@ -89,4 +89,57 @@ class SecurityController extends AbstractController
 
         return $this->render('security/profileModification.html.twig');
     }
+
+    /**
+     * @Route("/admin", name="admin_page")
+     */
+    public function admin() {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        return $this->render('security/admin.html.twig');
+    }
+
+    /**
+     * @Route("/admin/user", name="adminUser_page")
+     */
+    public function adminUser(UserRepository $repo) {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $users = $repo->findAll();
+
+        return $this->render('security/adminUser.html.twig', [
+            'users' => $users
+        ]);
+    }
+
+    /**
+     * @Route("/promote/{id}", name="upgradeToAdmin_page")
+     */
+    public function ModifyRole(User $user, UserRepository $repo, ObjectManager $manager, Request $request) {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $users = $repo->findAll();
+
+        if( $request->isMethod("post")) {
+            if ($request->get("valid")) {
+                $user->setActive(1);
+                $user->setRoles("ROLE_USER");
+            }
+            elseif ($request->get("upToAdmin")) {
+                $user->setRoles("ROLE_ADMIN");
+            }
+            elseif($request->get("ban")) {
+                $user->setActive(0);
+                $user->setRoles("ROLE_VISITOR");
+            }
+            elseif($request->get("downToUser")) {
+                $user->setRoles("ROLE_USER");
+            }
+            $manager->persist($user);
+            $manager->flush();
+        }
+
+        return $this->render('security/adminUser.html.twig', [
+            'users' => $users,
+            'id' => $users
+        ]);
+    }
+
 }
