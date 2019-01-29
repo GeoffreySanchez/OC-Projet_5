@@ -46,7 +46,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @
      */
     private $email;
 
@@ -66,6 +65,9 @@ class User implements UserInterface
      */
     public $confirm_password;
 
+    /**
+     * @Assert\EqualTo(propertyPath="email", message="L'adresse mail doit être la même dans les deux champs")
+     */
     public $confirm_email;
 
     /**

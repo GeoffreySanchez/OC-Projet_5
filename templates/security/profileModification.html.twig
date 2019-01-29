@@ -1,26 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
     <h1>Vous voulez modifier vos informations personnelles ?</h1>
-    <p>Remplissez le formulaire suivant en renseignant les champs que vous souhaitez</p>
-    <p>les champs Adresse postale et Adresse email sont pré-remplit avec vos informations actuelles, veuillez les modifier si nécessaire</p>
+    {% if app.request.attributes.get('_route') == "profileModification_page" %}
+        <ul>
+            <li>
+                <a href="{{ path("profileModificationAdresse_page") }}">Modifier l'adresse</a>
+            </li>
+            <li>
+                <a href="{{ path("profileModificationEmail_page") }}">Modifier l'adresse email</a>
+            </li>
+            <li>
+                <a href="{{ path("profileModificationPassword_page") }}">Modifier le mot de passe</a>
+            </li>
+        </ul>
 
-    {{ form_start(form) }}
-    <div>
-        {{ form_row(form.adresse, {'label': 'Adresse postale', 'attr': {'placeholder': 'Votre nouvelle adresse postale'}}) }}
-    </div>
-    <hr>
-    <div>
-        {{ form_row(form.email, {'label': 'Adresse email', 'attr': {'placeholder': 'Votre adresse email'}}) }}
-        {{ form_row(form.confirm_email, {'label': 'Nouvelle adresse email', 'attr': {'placeholder': 'Confirmez votre nouvelle adresse email'}}) }}
-    </div>
+    <!-- Formulaire pour la modification de l'adresse -->
+    {% elseif app.request.attributes.get('_route') == "profileModificationAdresse_page" %}
+        <form action="{{ path("profileModificationAdresse_page", {"id" : app.user.id}) }}" method="post">
+            <div class="form-group">
+                <label for="modifAdresse">Votre nouvelle adresse</label>
+                <input type="text" class="form-control" id="modifAdresse" name="modifAdresse" placeholder="Entrez votre nouvelle adresse">
+            </div>
+            <button type="submit" class="btn btn-success">modifier</button>
+            <button type="submit" class="btn btn-warning" name="annulerModif" value="annulerModif">Retour</button>
+        </form>
 
-    <div>
-        <button type="submit" class="btn btn-success">Modification</button>
-    </div>
+    <!-- Formulaire pour la modification de l'adresse email -->
+    {% elseif app.request.attributes.get('_route') == "profileModificationEmail_page" %}
+        <form action="{{ path("profileModificationEmail_page") }}" method="post">
+        <div class="form-group">
+            <label for="modifEmail">Nouvelle adresse email</label>
+            <input type="email" class="form-control" id="modifEmail" name="modifEmail" placeholder="Entrez votre nouvelle adresse email">
+        </div>
+        <div class="form-group">
+            <label for="confirmModifEmail">Confirmer nouvelle adresse email</label>
+            <input type="email" class="form-control" id="confirmModifEmail" name="confirmModifEmail" placeholder="Confirmez votre nouvelle adresse email">
+        </div>
+        <button type="submit" class="btn btn-success">modifier</button>
+        <button type="submit" class="btn btn-warning" name="annulerModif" value="annulerModif">Retour</button>
+        </form>
 
-    {{ form_end(form) }}
-
+    <!-- Formulaire pour la modification du mot de passe -->
+    {% elseif app.request.attributes.get('_route') == "profileModificationPassword_page" %}
+        <form action="{{ path("profileModificationPassword_page") }}" method="post">
+            <div class="form-group">
+                <label for="modifPassword">Nouveau mot de passe</label>
+                <input type="password" class="form-control" id="modifPassword" name="modifPassword" placeholder="Entrez votre nouveau mot de passe">
+            </div>
+            <div class="form-group">
+                <label for="confirmModifPassword">Confirmer nouveau mot de passe</label>
+                <input type="password" class="form-control" id="confirmModifPassword" name="confirmModifPassword" placeholder="Confirmez votre noubveau mot de passe">
+            </div>
+            <button type="submit" class="btn btn-success">modifier</button>
+            <button type="submit" class="btn btn-warning" name="annulerModif" value="annulerModif">Retour</button>
+        </form>
+    {%endif%}
 {% endblock %}

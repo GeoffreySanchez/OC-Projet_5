@@ -69,23 +69,42 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/profile/modification", name="profileModification_page")
+     * @Route("/profile/modification/adresse", name="profileModificationAdresse_page")
+     * @Route("/profile/modification/mail", name="profileModificationEmail_page")
+     * @Route("/profile/modification/password", name="profileModificationPassword_page")
      */
-    public function profileModification(Request $request, ObjectManager $manager) {
+    public function profileModification(Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $user = $this->getUser();
-        $form = $this->createForm(ProfilModificationType::class, $user);
-        $form->handleRequest($request);
+        $CurrentUser = $this->getUser();
 
-        if($form->isSubmitted() && $form->isValid()) {
-            $manager->persist($user);
+        if($request->isMethod("post")) {
+            if ($request->get("annulerModif")) {
+                return $this->redirectToRoute('profileModification_page');
+            }
+            elseif($request->get("modifAdresse")) {
+                $CurrentUser->setAdresse($request->get("modifAdresse"));
+            }
+            elseif($request->get("modifEmail")) {
+                if($request->get("modifEmail") == $request->get("confirmModifEmail")) {
+                    $CurrentUser->setEmail($request->get("modifEmail"));
+                }
+                else {
+                    //faire la vérification avec confirm_email
+                }
+            }
+            elseif($request->get("modifPassword")) {
+                if($request->get("modifPassword") == $request->get("confirmModifPassword")) {
+                    $hash = $encoder->encodePassword($CurrentUser, $request->get("modifPassword"));
+                    $CurrentUser->setPassword($hash);
+                }
+                else {
+                    //faire la vérification avec confirm_email
+                }
+            }
+            $manager->persist($CurrentUser);
             $manager->flush();
-
-            return $this->redirectToRoute('profileModification_page');
+            return $this->render('security/profileModification.html.twig');
         }
-
-        return $this->render('security/profileModification.html.twig', [
-            'form' => $form->CreateView()
-        ]);
 
         return $this->render('security/profileModification.html.twig');
     }
@@ -117,8 +136,9 @@ class SecurityController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $users = $repo->findAll();
 
-        if( $request->isMethod("post")) {
+        if($request->isMethod("post")) {
             if ($request->get("valid")) {
+                dump($user);
                 $user->setActive(1);
                 $user->setRoles("ROLE_USER");
             }
