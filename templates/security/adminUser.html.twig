@@ -31,8 +31,10 @@
                             Administrateur
                         {% elseif role == "ROLE_USER" %}
                             Membre activé
-                         {% elseif role == 'ROLE_VISITOR' %}
+                        {% elseif role == "ROLE_VISITOR" %}
                             Membre désactivé
+                        {% elseif role == "ROLE_SUPER_ADMIN" %}
+                            Super administrateur
                         {% endif %}
                     {% endfor %}
                 </td>
