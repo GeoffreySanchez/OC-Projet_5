@@ -37,7 +37,7 @@ class ModelPrize
     private $goal;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string", length=255)
      */
     private $duration;
 
@@ -94,7 +94,7 @@ class ModelPrize
         return $this;
     }
 
-    public function getDuration(): ?\DateTimeInterface
+    public function getDuration(): ?string
     {
         return $this->duration;
     }

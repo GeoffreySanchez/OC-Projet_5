@@ -7,7 +7,6 @@ security:
             threads: 4
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory: { memory: ~ }
         in_database:
             entity:
                 class: App\Entity\User
@@ -44,5 +43,6 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     access_control:
+         - { path: ^/new/model, roles: ROLE_SUPER_ADMIN }
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_VISITOR }

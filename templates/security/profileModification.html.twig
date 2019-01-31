@@ -3,58 +3,28 @@
 
 {% block body %}
     <h1>Vous voulez modifier vos informations personnelles ?</h1>
-    {% if app.request.attributes.get('_route') == "profileModification_page" %}
-        <ul>
-            <li>
-                <a href="{{ path("profileModificationAdresse_page") }}">Modifier l'adresse</a>
-            </li>
-            <li>
-                <a href="{{ path("profileModificationEmail_page") }}">Modifier l'adresse email</a>
-            </li>
-            <li>
-                <a href="{{ path("profileModificationPassword_page") }}">Modifier le mot de passe</a>
-            </li>
-        </ul>
-
-    <!-- Formulaire pour la modification de l'adresse -->
-    {% elseif app.request.attributes.get('_route') == "profileModificationAdresse_page" %}
-        <form action="{{ path("profileModificationAdresse_page", {"id" : app.user.id}) }}" method="post">
-            <div class="form-group">
-                <label for="modifAdresse">Votre nouvelle adresse</label>
-                <input type="text" class="form-control" id="modifAdresse" name="modifAdresse" placeholder="Entrez votre nouvelle adresse">
-            </div>
-            <button type="submit" class="btn btn-success">modifier</button>
-            <button type="submit" class="btn btn-warning" name="annulerModif" value="annulerModif">Retour</button>
-        </form>
-
-    <!-- Formulaire pour la modification de l'adresse email -->
-    {% elseif app.request.attributes.get('_route') == "profileModificationEmail_page" %}
-        <form action="{{ path("profileModificationEmail_page") }}" method="post">
-        <div class="form-group">
-            <label for="modifEmail">Nouvelle adresse email</label>
-            <input type="email" class="form-control" id="modifEmail" name="modifEmail" placeholder="Entrez votre nouvelle adresse email">
+    <p class="lead">Remplissez les champs dont vous voulez modifier les informations.</p>
+    <div class="card border-dark mb-3" style="max-width: 20rem;">
+        <div class="card-header">Vos informations actuelles</div>
+        <div class="card-body">
+            <h5 class="card-title">Adresse postale</h5>
+            <p class="card-text">{{ app.user.adresse }}</p>
         </div>
-        <div class="form-group">
-            <label for="confirmModifEmail">Confirmer nouvelle adresse email</label>
-            <input type="email" class="form-control" id="confirmModifEmail" name="confirmModifEmail" placeholder="Confirmez votre nouvelle adresse email">
+        <div class="card-body">
+            <h5 class="card-title">Adresse email</h5>
+            <p class="card-text">{{ app.user.email }}</p>
         </div>
-        <button type="submit" class="btn btn-success">modifier</button>
-        <button type="submit" class="btn btn-warning" name="annulerModif" value="annulerModif">Retour</button>
-        </form>
+    </div>
 
-    <!-- Formulaire pour la modification du mot de passe -->
-    {% elseif app.request.attributes.get('_route') == "profileModificationPassword_page" %}
-        <form action="{{ path("profileModificationPassword_page") }}" method="post">
-            <div class="form-group">
-                <label for="modifPassword">Nouveau mot de passe</label>
-                <input type="password" class="form-control" id="modifPassword" name="modifPassword" placeholder="Entrez votre nouveau mot de passe">
-            </div>
-            <div class="form-group">
-                <label for="confirmModifPassword">Confirmer nouveau mot de passe</label>
-                <input type="password" class="form-control" id="confirmModifPassword" name="confirmModifPassword" placeholder="Confirmez votre noubveau mot de passe">
-            </div>
-            <button type="submit" class="btn btn-success">modifier</button>
-            <button type="submit" class="btn btn-warning" name="annulerModif" value="annulerModif">Retour</button>
-        </form>
-    {%endif%}
+    {{ form_start(form) }}
+    {{ form_row(form.adresse, {'label': 'Adresse postale', 'attr': {'placeholder': 'Votre nouvelle adresse postale', 'value': ''}}) }}
+    <hr class="my-4">
+    {{ form_row(form.email, {'label': 'Adresse email', 'attr': {'placeholder': 'Votre nouvelle adresse email', 'value': ''}}) }}
+    {{ form_row(form.confirm_email, {'label': 'Confirmation adresse email', 'attr': {'placeholder': 'Confirmez votre nouvelle adresse email', 'value': ''}}) }}
+    <hr class="my-4">
+    {{ form_row(form.password, {'label': 'Mot de passe', 'attr': {'placeholder': 'Votre nouveau mot de passe'}}) }}
+    {{ form_row(form.confirm_password, {'label': 'Confirmation mot de passe', 'attr': {'placeholder': 'Confirmez votre nouveau mot de passe'}}) }}
+    <button type="submit" class="btn btn-success">Modification</button>
+    {{ form_end(form) }}
+
 {% endblock %}

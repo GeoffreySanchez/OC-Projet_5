@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ModifyUserType;
 use App\Form\RegistrationType;
-use App\Form\ProfilModificationType;
+use App\Repository\ModelPrizeRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -69,44 +71,28 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/profile/modification", name="profileModification_page")
-     * @Route("/profile/modification/adresse", name="profileModificationAdresse_page")
-     * @Route("/profile/modification/mail", name="profileModificationEmail_page")
-     * @Route("/profile/modification/password", name="profileModificationPassword_page")
      */
-    public function profileModification(Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager) {
+    public function profileModification(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $CurrentUser = $this->getUser();
+        $currentUser = $this->getUser();
 
-        if($request->isMethod("post")) {
-            if ($request->get("annulerModif")) {
-                return $this->redirectToRoute('profileModification_page');
+        $form = $this->createForm(ModifyUserType::class, $currentUser);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            if($request->get("modify_user")['password'] == '') {
+            } else {
+                $hash = $encoder->encodePassword($currentUser, $request->get("modify_user")['password']);
+                $currentUser->setPassword($hash);
             }
-            elseif($request->get("modifAdresse")) {
-                $CurrentUser->setAdresse($request->get("modifAdresse"));
-            }
-            elseif($request->get("modifEmail")) {
-                if($request->get("modifEmail") == $request->get("confirmModifEmail")) {
-                    $CurrentUser->setEmail($request->get("modifEmail"));
-                }
-                else {
-                    //faire la vérification avec confirm_email
-                }
-            }
-            elseif($request->get("modifPassword")) {
-                if($request->get("modifPassword") == $request->get("confirmModifPassword")) {
-                    $hash = $encoder->encodePassword($CurrentUser, $request->get("modifPassword"));
-                    $CurrentUser->setPassword($hash);
-                }
-                else {
-                    //faire la vérification avec confirm_email
-                }
-            }
-            $manager->persist($CurrentUser);
+
+            $manager->persist($currentUser);
             $manager->flush();
-            return $this->render('security/profileModification.html.twig');
+            return $this->redirectToRoute('profileModification_page');
         }
 
-        return $this->render('security/profileModification.html.twig');
+        return $this->render('security/profileModification.html.twig', [
+            'form' => $form->CreateView()
+        ]);
     }
 
     /**
@@ -114,7 +100,11 @@ class SecurityController extends AbstractController
      */
     public function admin() {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        return $this->render('security/admin.html.twig');
+        $user = $this->getUser();
+        dump($user);
+        return $this->render('security/admin.html.twig', [
+            "user" => $user
+        ]);
     }
 
     /**
@@ -132,26 +122,13 @@ class SecurityController extends AbstractController
     /**
      * @Route("/promote/{id}", name="upgradeToAdmin_page")
      */
-    public function ModifyRole(User $user, UserRepository $repo, ObjectManager $manager, Request $request) {
+    public function adminModifyRole(User $user, UserRepository $repo, ObjectManager $manager, Request $request) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $users = $repo->findAll();
 
-        if($request->isMethod("post")) {
-            if ($request->get("valid")) {
-                dump($user);
-                $user->setActive(1);
-                $user->setRoles("ROLE_USER");
-            }
-            elseif ($request->get("upToAdmin")) {
-                $user->setRoles("ROLE_ADMIN");
-            }
-            elseif($request->get("ban")) {
-                $user->setActive(0);
-                $user->setRoles("ROLE_VISITOR");
-            }
-            elseif($request->get("downToUser")) {
-                $user->setRoles("ROLE_USER");
-            }
+        if($action = null != $request->request->get("action")) {
+            $user->handleUser($request->request->get("action"));
+
             $manager->persist($user);
             $manager->flush();
         }

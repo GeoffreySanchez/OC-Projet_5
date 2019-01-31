@@ -71,6 +71,11 @@ class User implements UserInterface
     public $confirm_email;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $tickets = 0;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $active = false;
@@ -127,9 +132,17 @@ class User implements UserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail($email): self
     {
-        $this->email = $email;
+        if($email == '')
+        {
+            $this->email = $this->email;
+        }
+        else
+        {
+            $this->email = $email;
+        }
+
 
         return $this;
     }
@@ -140,10 +153,13 @@ class User implements UserInterface
         return $this->adresse;
     }
 
-    public function setAdresse(string $adresse): self
+    public function setAdresse($adresse): self
     {
-        $this->adresse = $adresse;
-
+        if($adresse == '') {
+            $this->adresse = $this->adresse;
+        } else {
+            $this->adresse = $adresse;
+        }
         return $this;
     }
 
@@ -152,9 +168,24 @@ class User implements UserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword($password): self
     {
-        $this->password = $password;
+        if($password == '') {
+            $this->password = $this->password;
+        } else {
+            $this->password = $password;
+        }
+        return $this;
+    }
+
+    public function getTickets(): ?string
+    {
+        return $this->tickets;
+    }
+
+    public function setTikets(string $tickets): self
+    {
+        $this->tikets = $tickets;
 
         return $this;
     }
@@ -189,8 +220,25 @@ class User implements UserInterface
 
     public function setRoles(string $roles): self
     {
-        $this->roles = $roles;
-
+            $this->roles = $roles;
         return $this;
+    }
+    
+    public function handleUser(string $action)
+    {
+            if ($action == "valid") {
+                $this->setActive(1);
+                $this->setRoles("ROLE_USER");
+            }
+            elseif ($action == "upToAdmin") {
+                $this->setRoles("ROLE_ADMIN");
+            }
+            elseif($action == "ban") {
+                $this->setActive(0);
+                $this->setRoles("ROLE_VISITOR");
+            }
+            elseif($action == "downToUser") {
+                $this->setRoles("ROLE_USER");
+            }
     }
 }

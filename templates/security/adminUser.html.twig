@@ -3,7 +3,7 @@
 {% block body %}
 
     <h1>Administration d'utilisateur</h1>
-    <p>Cette section vous permet de gérer les utilisateurs du site</p>
+    <p class="lead">Cette section vous permet de gérer les utilisateurs du site</p>
 
     <section class="users">
         <table class="table table-hover">
@@ -41,12 +41,12 @@
                     <td>
                         <form action="{{ path("upgradeToAdmin_page", {"id" : user.id}) }}" method="post">
                             {% if user.roles == ["ROLE_USER"] %}
-                                <button type="submit" name="upToAdmin" value="upToAdmin" class="btn btn-outline-success">Passer administrateur</button>
-                                <button type="submit" name="ban" value="ban" class="btn btn-outline-danger">Désactiver le compte</button>
+                                <button type="submit" name="action" value="upToAdmin" class="btn btn-outline-success">Passer administrateur</button>
+                                <button type="submit" name="action" value="ban" class="btn btn-outline-danger">Désactiver le compte</button>
                             {% elseif user.roles == ["ROLE_VISITOR"] %}
-                                <button type="submit" name="valid" value="Valid" class="btn btn-outline-success">Activer le compte</button>
+                                <button type="submit" name="action" value="valid" class="btn btn-outline-success">Activer le compte</button>
                             {% elseif user.roles == ["ROLE_ADMIN"] %}
-                                <button type="submit" name="downToUser" value="downToUser" class="btn btn-outline-danger">Passer membre</button>
+                                <button type="submit" name="action" value="downToUser" class="btn btn-outline-danger">Passer membre</button>
                             {% endif %}
                         </form>
                     </td>

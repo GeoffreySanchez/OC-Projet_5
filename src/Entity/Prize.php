@@ -39,7 +39,7 @@ class Prize
     /**
      * @ORM\Column(type="datetime")
      */
-    private $maxDuration;
+    private $endDate;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -109,14 +109,14 @@ class Prize
         return $this;
     }
 
-    public function getMaxDuration(): ?\DateTimeInterface
+    public function getEndDate(): ?\DateTimeInterface
     {
-        return $this->maxDuration;
+        return $this->endDate;
     }
 
-    public function setMaxDuration(\DateTimeInterface $maxDuration): self
+    public function setEndDate(\DateTimeInterface $endDate): self
     {
-        $this->maxDuration = $maxDuration;
+        $this->endDate = $endDate;
 
         return $this;
     }
