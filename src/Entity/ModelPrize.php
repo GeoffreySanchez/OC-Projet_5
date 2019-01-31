@@ -99,10 +99,11 @@ class ModelPrize
         return $this->duration;
     }
 
-    public function setDuration(\DateTimeInterface $duration): self
+    public function setDuration(string $duration): self
     {
         $this->duration = $duration;
 
         return $this;
     }
+
 }

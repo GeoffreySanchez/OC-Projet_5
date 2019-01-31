@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Création d'un nouveau modèle</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.name, {'label': 'Nom', 'attr': {'placeholder': 'Le nom du nouveau modèle'}}) }}
+    {{ form_row(form.category, {'label': 'Catégorie', 'attr': {'placeholder': 'La catégorie du nouveau modèle'}}) }}
+    {{ form_row(form.image, {'label': 'Image', 'attr': {'placeholder': 'Le lien de l\'image par défaut du lot'}}) }}
+    {{ form_row(form.goal, {'label': 'Nombre de ticket max', 'attr': {'placeholder': 'Ajoutez un nombre de ticket à atteindre pour ce type de lot'}}) }}
+    {{ form_row(form.duration, {'label': 'Durée', 'attr': {'placeholder': 'Durée maximale du lot avant d\'être retiré'}}) }}
+    <button type="submit" class="btn btn-success">Créer</button>
+    {{ form_end(form) }}
+{% endblock %}
