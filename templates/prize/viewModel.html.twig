@@ -20,11 +20,17 @@
                     <td>{{ model.category }}</td>
                     <td>{{ model.goal }}</td>
                     <td>{{ model.duration }} jours</td>
+                    <td>
+                        <form action="{{ path('modifyModel_page', {'id' : model.id}) }}" method="post">
+                            <button class="btn btn-warning" type="submit" name="action" value="modifyModel">Modifier le modèle</button>
+                            <button class="btn btn-danger" type="submit" name="action" value="deleteModel" onclick="return confirm('Etes vous sûr de vouloir supprimer ce modèle ?')">Supprimer le modèle</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
-        <form action="" method="post">
-            <button class="btn btn-success" type="submit" name="newmodel">Créer un modèle</button>
+        <form action="{{ path('newModel_page') }}" method="post">
+            <button  class="btn btn-success" type="submit" name="newmodel">Créer un modèle</button>
         </form>
     </section>
 {% endblock %}

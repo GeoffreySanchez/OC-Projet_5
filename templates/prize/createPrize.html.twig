@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Créer un nouveau lot</h1>
+    <p class="lead">Pour créer un nouveau lot, veuillez selectionner un modèle dans le menu déroulant, vous pouvez modifier manuellement certaines informations.</p>
+    <form id="createPrize" action="" method="post">
+        <div class="form-group">
+            <label for="exampleSelect2">Selectionnez un modèle</label>
+            <select class="form-control" onchange='changeAction(this.value); submit();'>
+                <option></option>
+                {% for model in models %}
+                    <option value="{{ path('createPrizeId_page', {'id': model.id}) }}">{{ model.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+    {% if modelPick == null %}
+    {% else %}
+    {{ form_start(form) }}
+    {{ form_row(form.name, {'label': 'Nom', 'attr': {'placeholder': 'Le nom du nouveau lot','value':  modelPick.name}}) }}
+    {{ form_row(form.category, {'label': 'Catégorie', 'attr': {'placeholder': 'La catégorie du nouveau lot', 'value': modelPick.category}}) }}
+    {{ form_row(form.image, {'label': 'Image', 'attr': {'placeholder': 'Le lien de l\'image du lot', 'value': modelPick.image}}) }}
+    {{ form_row(form.goal, {'label': 'Nombre de tickets max', 'attr': {'placeholder': 'Ajoutez un nombre de ticket à atteindre pour ce type de lot', 'value': modelPick.goal}}) }}
+    {{ form_row(form.duration, {'label': 'Nombre de jours max', 'attr': {'placeholder': 'Vous pouvez modifier la durée maximale du lot', 'value': modelPick.duration}}) }}
+    <button type="submit" class="btn btn-success">Ajouter</button>
+    {{ form_end(form) }}
+    {% endif %}
+
+{% endblock%}
+
+
+{% block javascripts %}
+    <script>
+        function changeAction(val){
+            document.getElementById('createPrize').setAttribute('action', val);
+        }
+    </script>
+
+{% endblock %}

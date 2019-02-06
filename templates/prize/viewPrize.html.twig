@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des lots</h1>
+    <p class="lead">Sur cette page sont exposés tout les lots. Vous pouvez modifier les lots existant ou alors en créer de nouveaux.</p>
+    <section class="prize">
+        <table class="table table-hover">
+            <tr>
+                <td>Id</td>
+                <td>Nom</td>
+                <td>Catégorie</td>
+                <td>Nombre de ticket requis</td>
+                <td>Nombre de ticket en cours</td>
+                <td>Date de création</td>
+                <td>Date de fin</td>
+                <td>Visibilité</td>
+                <td>Actions</td>
+            </tr>
+            {% for prize in prizes %}
+                <tr>
+                    <td>{{ prize.id }}</td>
+                    <td>{{ prize.name }}</td>
+                    <td>{{ prize.category }}</td>
+                    <td>{{ prize.goal }}</td>
+                    <td>{{ prize.currentTicket }}</td>
+                    <td>{{ prize.createdAt | date('d-m-Y à H:i' ) }}</td>
+                    <td>{{ prize.endDate | date('d-m-Y à H:i' ) }}</td>
+                    <td>
+                        {% if prize.visible == true %}
+                            Oui
+                        {% else %}
+                            non
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="{{ path('modifyPrize_page', {'id' : prize.id}) }}" method="post">
+                            <button class="btn btn-warning" type="submit" name="action" value="modifyPrize">Modifier le lot</button>
+                            <button class="btn btn-danger" type="submit" name="action" value="deletePrize" onclick="return confirm('Etes vous sûr de vouloir supprimer ce lot ?')">Supprimer le lot</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <form action="{{ path('createPrize_page') }}" method="post">
+            <button  class="btn btn-success" type="submit" name="newmodel">Créer un lot</button>
+        </form>
+    </section>
+{% endblock %}

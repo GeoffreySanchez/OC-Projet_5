@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bundle\SecurityBundle\Tests\DependencyInjection\Fixtures\UserProvider\DummyProvider;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PrizeRepository")
@@ -24,7 +27,7 @@ class Prize
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $currentTicket;
+    private $currentTicket = "0";
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -49,12 +52,15 @@ class Prize
     /**
      * @ORM\Column(type="boolean")
      */
-    private $visible;
+    private $visible = true;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $category;
+
+    public $duration;
+
 
     public function getId(): ?int
     {
@@ -97,12 +103,16 @@ class Prize
         return $this;
     }
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt($createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -114,10 +124,16 @@ class Prize
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): self
+    /**
+     * @return Prize
+     */
+    public function setEndDate($endDate): self
     {
-        $this->endDate = $endDate;
-
+        if($endDate == null) {
+            $this->endDate = new \DateTime("+$this->duration day");
+        } else {
+            $this->endDate = $endDate;
+        }
         return $this;
     }
 

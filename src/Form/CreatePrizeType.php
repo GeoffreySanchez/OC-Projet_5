@@ -2,29 +2,23 @@
 
 namespace App\Form;
 
-use App\Entity\ModelPrize;
+use App\Entity\Prize;
+use App\Repository\ModelPrizeRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NewModelPrizeType extends AbstractType
+class CreatePrizeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')
-            ->add('category', ChoiceType::class, [
-                'choices' => [
-                    '' => '',
-                    'jeu vidéo' => 'jeu vidéo',
-                    'smartphone' => 'smartphone',
-                    'objet connecté' => 'objet connecté',
-                    'autre' => 'autre',
-                ]
-            ])
-            ->add('image')
+            ->add('category')
             ->add('goal')
+            ->add('image')
             ->add('duration')
         ;
     }
@@ -32,7 +26,7 @@ class NewModelPrizeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ModelPrize::class,
+            'data_class' => Prize::class,
         ]);
     }
 }

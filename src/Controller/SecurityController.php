@@ -28,7 +28,6 @@ class SecurityController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
-
             $user->setPassword($hash);
 
             $manager->persist($user);
@@ -78,10 +77,10 @@ class SecurityController extends AbstractController
 
         $form = $this->createForm(ModifyUserType::class, $currentUser);
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()) {
-            if($request->get("modify_user")['password'] == '') {
-            } else {
-                $hash = $encoder->encodePassword($currentUser, $request->get("modify_user")['password']);
+            if($form->get('password')->getData()) {
+                $hash = $encoder->encodePassword($currentUser, $form->getData()->getPassword());
                 $currentUser->setPassword($hash);
             }
 
@@ -101,7 +100,6 @@ class SecurityController extends AbstractController
     public function admin() {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
-        dump($user);
         return $this->render('security/admin.html.twig', [
             "user" => $user
         ]);
@@ -120,7 +118,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/promote/{id}", name="upgradeToAdmin_page")
+     * @Route("admin/user/{id}", name="upgradeToAdmin_page")
      */
     public function adminModifyRole(User $user, UserRepository $repo, ObjectManager $manager, Request $request) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');

@@ -3,9 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ModelPrizeRepository")
+ * @UniqueEntity(
+ *     fields = {"name"},
+ *     message = "Ce lot existe déjà, veuillez le modifier ou le supprimer avant d'en créer un nouveau"
+ * )
  */
 class ModelPrize
 {

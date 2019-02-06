@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\EqualTo;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Validator\Constraints\Length;
 
 class ModifyUserType extends AbstractType
@@ -22,17 +23,30 @@ class ModifyUserType extends AbstractType
             ->add('adresse', TextType::class, [
                 'required' => false,
             ])
-            ->add('email', EmailType::class, [
+            ->add('email', RepeatedType::class, [
+                'type' => EmailType::class,
+                'invalid_message' => 'Les adresses emails doivent être identiques',
                 'required' => false,
+                'empty_data' => '',
+                'data' => '',
+                'first_options' => [
+                    'label' => 'Adresse email',
+                    'attr' => ['placeholder' => 'Votre nouvelle adresse email'],
+                ],
+                'second_options' => ['label' => 'Répeter l\'adresse email',
+                    'attr' => ['placeholder' => 'Répeter votre nouvelle adresse email'],
+                ],
             ])
-            ->add('confirm_email',EmailType::class, [
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les mots de passes doivent être identiques !',
                 'required' => false,
-            ])
-            ->add('password', PasswordType::class,  [
-                'required' => false,
-            ])
-            ->add('confirm_password', PasswordType::class, [
-                'required' => false,
+                'first_options' => ['label' => 'Mot de passe',
+                    'attr' => ['placeholder' => 'Votre nouveau mot de passe'],
+                ],
+                'second_options' => ['label' => 'Répeter le mot de passe',
+                    'attr' => ['placeholder' => 'Répeter votre nouveau mot de passe'],
+                ],
             ])
         ;
     }
