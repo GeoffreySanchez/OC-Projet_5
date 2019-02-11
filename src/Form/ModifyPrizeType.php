@@ -20,7 +20,9 @@ class ModifyPrizeType extends AbstractType
             ->add('goal', TextType::class)
             ->add('endDate', DateTimeType::class)
             ->add('image', TextType::class)
-            ->add('visible', CheckboxType::class)
+            ->add('visible', CheckboxType::class, [
+                'required' => false,
+            ])
         ;
     }
 

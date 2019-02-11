@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\PrizeRepository;
+use App\Repository\TicketRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,6 +27,19 @@ class MainController extends AbstractController
     {
         return $this->render('main/infos.html.twig', [
             'controller_name' => 'MainController',
+        ]);
+    }
+
+    /**
+     * @Route("/tirages", name="showPrize_page")
+     */
+    public function showPrize(PrizeRepository $prize, TicketRepository $ticket)
+    {
+        $prizes = $prize->findAll();
+        $tickets = $ticket->findAll();
+        return $this->render('main/showPrize.html.twig', [
+            'prizes' => $prizes,
+            'tickets' => $tickets
         ]);
     }
 }

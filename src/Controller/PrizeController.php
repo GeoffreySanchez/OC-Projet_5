@@ -22,9 +22,11 @@ class PrizeController extends AbstractController
     public function viewModel(ModelPrizeRepository $model, Request $request)
     {
         $models = $model->findAll();
-        if($request->request->get("newmodel")) {
+        if($request->request->get("newmodel"))
+        {
             return $this->redirectToRoute("newModel_page");
         }
+
         return $this->render('prize/viewModel.html.twig', [
             'models' => $models,
         ]);
@@ -36,7 +38,8 @@ class PrizeController extends AbstractController
      */
     public function manageModel(Request $request, ObjectManager $manager, ModelPrize $model = null)
     {
-        if(!$model){
+        if(!$model)
+        {
             $model = new ModelPrize();
         }
 
@@ -55,7 +58,6 @@ class PrizeController extends AbstractController
         {
             $manager->persist($model);
             $manager->flush();
-
             return $this->redirectToRoute('viewModel_page');
         }
 
@@ -71,7 +73,6 @@ class PrizeController extends AbstractController
     public function viewPrize(PrizeRepository $prizes)
     {
         $allPrize = $prizes->findAll();
-
         return $this->render('prize/viewPrize.html.twig', [
             'prizes' => $allPrize,
         ]);
@@ -104,7 +105,6 @@ class PrizeController extends AbstractController
             $prize->setEndDate(null);
             $manager->persist($prize);
             $manager->flush();
-
             return $this->redirectToRoute('viewPrize_page');
         }
 
@@ -122,14 +122,12 @@ class PrizeController extends AbstractController
     {
         $form = $this->createForm(ModifyPrizeType::class, $prize);
         $form->handleRequest($request);
-            if($form->isSubmitted() && $form->isValid())
-            {
-                $manager->persist($prize);
-                $manager->flush();
-
-                return $this->redirectToRoute('viewPrize_page');
-            }
-
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $manager->persist($prize);
+            $manager->flush();
+            return $this->redirectToRoute('viewPrize_page');
+        }
 
         if($request->request->get('action') == 'deletePrize')
         {

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des tirages en cours</h1>
+    <div class="d-flex flex-wrap">
+    {% for prize in prizes %}
+        <div class="card mb-4 ml-auto mr-auto text-center d-inline-flex" id="{{ prize.id }}">
+            <h4 class="card-header">{{ prize.name }}</h4>
+            <div  class="">
+                <img class="w-100 max-w-img max-h-img" src="{{ prize.image }}" alt="Card image">
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Nombre de participant: </li>
+                <li class="list-group-item">
+                    <p class="list-group-p">Avancement :</p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: {{ prize.pourcentage }}%"></div>
+                    </div>
+                </li>
+                <li class="list-group-item">Fin du lot: {{ prize.strEndDate }}</li>
+            </ul>
+            <div class="card-body">
+            {% if is_granted('ROLE_USER') %}
+                {% if app.user.tickets == 0 %}
+                <a href="#">Récupérer des tickets</a>
+                {% else %}
+                <a href="{{ path('playPrize_page', {'id': prize.id}) }}" class="card-link">Jouer des tickets</a>
+                {% endif %}
+            {% else %}
+                <a href="{{ path('login_page') }}">Identifiez vous pour jouer !</a>
+            {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+        </div>
+{% endblock %}

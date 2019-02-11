@@ -72,7 +72,7 @@ class User implements UserInterface
     public $confirm_email;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $tickets = 0;
 

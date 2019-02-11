@@ -25,12 +25,12 @@ class Prize
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer", length=255)
      */
-    private $currentTicket = "0";
+    private $currentTicket = 0;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer", length=255)
      */
     private $goal;
 
@@ -124,9 +124,7 @@ class Prize
         return $this->endDate;
     }
 
-    /**
-     * @return Prize
-     */
+
     public function setEndDate($endDate): self
     {
         if($endDate == null) {
@@ -156,6 +154,9 @@ class Prize
 
     public function setVisible(bool $visible): self
     {
+        if($visible == null) {
+            $visible == false;
+        }
         $this->visible = $visible;
 
         return $this;
@@ -171,5 +172,20 @@ class Prize
         $this->category = $category;
 
         return $this;
+    }
+
+    public function pourcentage()
+    {
+        return $this->currentTicket * 100 / $this->goal;
+    }
+
+    public function ticketToGoal()
+    {
+        return $this->goal - $this->currentTicket;
+    }
+
+    public function strEndDate()
+    {
+        return $this->endDate->format('d-m-Y à  H:i:s');
     }
 }
