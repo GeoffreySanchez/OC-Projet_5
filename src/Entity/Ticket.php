@@ -19,7 +19,7 @@ class Ticket
     /**
      * @ORM\Column(type="integer")
      */
-    private $usernameId;
+    private $usernameId ;
 
     /**
      * @ORM\Column(type="integer")
@@ -65,9 +65,9 @@ class Ticket
         return $this->number;
     }
 
-    public function setNumber(string $number): self
+    public function setNumber(): self
     {
-        $this->number = $number;
+        $this->number = rand(100000,900000) + $this->usernameId + $this->prizeId + rand(1,90000);
 
         return $this;
     }

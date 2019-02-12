@@ -184,9 +184,9 @@ class User implements UserInterface
         return $this->tickets;
     }
 
-    public function setTikets(string $tickets): self
+    public function setTickets(string $tickets): self
     {
-        $this->tikets = $tickets;
+        $this->tickets = $tickets;
 
         return $this;
     }
