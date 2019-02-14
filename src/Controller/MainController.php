@@ -37,6 +37,12 @@ class MainController extends AbstractController
     {
         $prizes = $prize->findAll();
         $tickets = $ticket->findAll();
+
+        foreach ($prizes as $prize)
+        {
+            $currentPlayer = array_values($ticket->getDifferentUsers($prize->getId()) [0]);
+            $prize->nombreJoueur($currentPlayer);
+        }
         return $this->render('main/showPrize.html.twig', [
             'prizes' => $prizes,
             'tickets' => $tickets

@@ -17,45 +17,47 @@ class Ticket
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      */
-    private $usernameId ;
+    private $user ;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Prize")
      */
-    private $prizeId;
+    private $prize;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $number;
 
+    public $winner;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsernameId(): ?int
+    public function getUser()
     {
-        return $this->usernameId;
+        return $this->user;
     }
 
-    public function setUsernameId(int $usernameId): self
+    public function setUser($user): self
     {
-        $this->usernameId = $usernameId;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getPrizeId(): ?int
+    public function getPrize(): ?int
     {
-        return $this->prizeId;
+        return $this->prize;
     }
 
-    public function setPrizeId(int $prizeId): self
+    public function setPrize($prize): self
     {
-        $this->prizeId = $prizeId;
+        $this->prize = $prize;
 
         return $this;
     }
@@ -67,7 +69,7 @@ class Ticket
 
     public function setNumber(): self
     {
-        $this->number = rand(100000,900000) + $this->usernameId + $this->prizeId + rand(1,90000);
+        $this->number = rand(100000,900000) + rand(1,90000);
 
         return $this;
     }

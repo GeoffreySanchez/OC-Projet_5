@@ -59,6 +59,11 @@ class Prize
      */
     private $category;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $winner;
+
     public $duration;
 
 
@@ -174,6 +179,18 @@ class Prize
         return $this;
     }
 
+    public function getWinner(): ?string
+    {
+        return $this->winner;
+    }
+
+    public function setWinner(string $winner): self
+    {
+        $this->winner = $winner;
+
+        return $this;
+    }
+
     public function pourcentage()
     {
         return $this->currentTicket * 100 / $this->goal;
@@ -187,5 +204,10 @@ class Prize
     public function strEndDate()
     {
         return $this->endDate->format('d-m-Y à  H:i:s');
+    }
+
+    public function nombreJoueur($nombre){
+        $this->nombreJoueur = $nombre;
+        return $this;
     }
 }

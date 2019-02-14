@@ -10,7 +10,7 @@
                 <img class="max-w-img max-h-img" src="{{ prize.image }}" alt="Card image">
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Nombre de participant:</li>
+                <li class="list-group-item">Nombre de participant: {{ prize.nombreJoueur[0] }}</li>
                 <li class="list-group-item">
                     {% if prize.ticketToGoal != 0 %}
                     <p class="list-group-p">Avancement :</p>
@@ -27,7 +27,7 @@
                 {% endif %}
             </ul>
             <div class="card-body">
-                {% if prize.ticketToGoal != 0 %}
+                {% if prize.visible == 1 %}
                 <p class="list-group-p">Nombre de tickets que vous voulez jouer: </p>
                 <form action="{{ path('playPrize_page', {'id': prize.id}) }}" method="post">
                     <div class="form-group">
@@ -40,7 +40,7 @@
                     </div>
                 </form>
                 {% else %}
-                    <p class="list-group-p">Le grand gagnant est: </p>
+                    <p class="list-group-p">Le gagnant est: {{ prize.winner }}</p>
                 {% endif %}
             </div>
         </div>
