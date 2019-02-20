@@ -7,10 +7,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserCodeRepository")
- * @UniqueEntity(
- *     fields = {"couponCode"},
- *     message = "Vous avez déjà utilisé ce code"
- * )
  */
 class UserCode
 {
@@ -29,7 +25,7 @@ class UserCode
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CouponCode")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\joinColumn(onDelete="CASCADE")
      */
     private $couponCode;
 
