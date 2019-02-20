@@ -136,5 +136,4 @@ class SecurityController extends AbstractController
             'id' => $users
         ]);
     }
-
 }

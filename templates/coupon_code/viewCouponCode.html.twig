@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des coupons</h1>
+    <p class="lead">Sur cette page sont exposés tout les codes. Vous pouvez modifier les codes existants ou alors en créer de nouveaux.</p>
+    <section class="models">
+        <table class="table table-hover">
+            <tr>
+                <td>Id</td>
+                <td>Nom</td>
+                <td>Code</td>
+                <td>Nombre de ticket</td>
+                <td>Nombre d'utilisations actuelles</td>
+                <td>Nombre d'utilisations max</td>
+                <td>Date de fin</td>
+                <td>Administration</td>
+            </tr>
+            {% for code in codes %}
+                <tr>
+                    <td>{{ code.id }}</td>
+                    <td>{{ code.name }}</td>
+                    <td>{{ code.code }}</td>
+                    <td>{{ code.ticket }}</td>
+                    <td>{{ code.currentUse }}</td>
+                    <td>{{ code.maxUse }}</td>
+                    <td>{{ code.endDate | date ('d/m/Y')}}</td>
+                    <td>
+                        <form action="{{ path('modifyCouponCode_page', {'id' : code.id}) }}" method="post">
+                            <button class="btn btn-warning" type="submit" name="action" value="modifyCode">Modifier le code</button>
+                            <button class="btn btn-danger" type="submit" name="action" value="deleteCode" onclick="return confirm('Etes vous sûr de vouloir supprimer ce code ?')">Supprimer le code</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <form action="{{ path('newCouponCode_page') }}" method="post">
+            <button  class="btn btn-success" type="submit" name="newmodel">Créer un code</button>
+        </form>
+    </section>
+{% endblock %}

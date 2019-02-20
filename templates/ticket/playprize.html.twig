@@ -33,7 +33,7 @@
                     <div class="form-group">
                         <!-- Les "oninput" servent à modifier la valeur de l'input qui n'est pas modifié pour que les valeurs des deux input soient identique -->
                         <input class="form-control-range" id="rangeValue" name="rangeValue" type="range" min="0" max="{{ prize.ticketToGoal }}" value="0" step="1" oninput="result.value=parseInt(rangeValue.value); verification()">
-                        <input  type="number" name="result" id="result" value="0" size="5"  max="{{ app.user.tickets }}" onkeyup="verification()" oninput="rangeValue.value=parseInt(result.value)">
+                        <input  type="number" name="result" id="result" value="0" size="5"  max="1000" onkeyup="verification()" oninput="rangeValue.value=parseInt(result.value)">
                     </div>
                     <div>
                         <button type="submit" class="btn btn-primary">Jouer</button>

@@ -19,14 +19,6 @@ class TicketRepository extends ServiceEntityRepository
         parent::__construct($registry, Ticket::class);
     }
 
-    public function getTickets($prizeId)
-    {
-        return $this->createQueryBuilder('t')
-            ->where("t.prize = $prizeId")
-            ->getQuery()
-            ->getResult();
-    }
-
     public function getDifferentUsers($prizeId)
     {
         $rawSql = "SELECT COUNT(DISTINCT user_id) FROM ticket WHERE prize_id = $prizeId";

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Gagner des tickets</h1>
+    <p class="lead">Pour obtenir des tickets supplémentaires, vous pouvez entrer un code promo ou alors regarder des vidéos publicitaires.</p>
+    <section id="codePromo">
+        <h5>Entrez votre code dans le formulaire ci-dessous</h5>
+        <form action="{{ path("useCouponCode_page") }}" method="post">
+            <div class="form-group">
+                <label for="couponCode">votre code</label>
+                <input type="text" name="couponCode" id="couponCode" class="form-control" placeholder="entrez votre code ici ...">
+                {% for message in app.flashes('unusedCode') %}
+                    <div class="validCode">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('usedCode') %}
+                    <div class="unvalidCode">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+            </div>
+            <button type="submit" class="btn btn-success">Valider</button>
+        </form>
+    </section>
+
+    <hr class="my-4">
+
+    <section id="videoPublicitaire">
+        <h5>Regardez une vidéo afin de gagner vos tickets gratuitement</h5>
+    </section>
+{% endblock %}

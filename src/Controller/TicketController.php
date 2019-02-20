@@ -57,10 +57,7 @@ class TicketController extends AbstractController
             // Tirage au sort du gagnant du lot quand celui-ci atteint le nombre de ticket maximal
             if($prize->getCurrentTicket() == $prize->getGoal() && $prize->getVisible() == 1)
             {
-                // fonctionne avec la requête dql
-                $collectTickets = $tickets->getTickets($prize->getId());
-                // fonctionne sans requête specifique
-                //$collectTickets = $tickets->findBy(array('prize' => $prize->getId()));
+                $collectTickets = $tickets->findBy(array('prize' => $prize->getId()));
                 $randWinnerTicket = array_rand($collectTickets, 1);
                 $winner = $tickets->find($randWinnerTicket)->getUser()->getUsername();
 
@@ -78,5 +75,13 @@ class TicketController extends AbstractController
         return $this->render('ticket/playPrize.html.twig', [
             'prize' => $prize
         ]);
+    }
+
+    /**
+     * @Route("/profile/ticket", name="earnTicket_page")
+     */
+    public function earnTicket()
+    {
+        return $this->render('ticket/earnTicket.html.twig');
     }
 }
