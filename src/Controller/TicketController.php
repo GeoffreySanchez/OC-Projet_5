@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\Ticket;
 use App\Repository\TicketRepository;
 use App\Repository\UserRepository;
+use App\Repository\VideoRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use phpDocumentor\Reflection\Types\Mixed_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -80,8 +81,26 @@ class TicketController extends AbstractController
     /**
      * @Route("/profile/ticket", name="earnTicket_page")
      */
-    public function earnTicket()
+    public function earnTicket(VideoRepository $video, ObjectManager $manager, Request $request)
     {
-        return $this->render('ticket/earnTicket.html.twig');
+        $user = $this->getUser();
+        $videoToWatch = $video->getRandomUrl();
+        $idVideoWatched = $request->request->get('winTickets');
+        $TicketVideoWatched = $video->findBy(array('id' => $idVideoWatched));
+
+        if($idVideoWatched != null)
+        {
+            // Ajoute les tickets gagné avec la vidéo à l'utilisateur
+            $earnTickets = $user->getTickets() + $TicketVideoWatched[0]->getTicket();
+            $addTicketsToUser = $user->setTickets($earnTickets);
+
+            $manager->persist($user);
+            $manager->flush();
+
+            return $this->redirectToRoute('earnTicket_page');
+        }
+        return $this->render('ticket/earnTicket.html.twig', [
+            'video' => $videoToWatch
+        ]);
     }
 }

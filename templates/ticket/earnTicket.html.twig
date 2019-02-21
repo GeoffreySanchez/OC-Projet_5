@@ -6,7 +6,7 @@
     <section id="codePromo">
         <h5>Entrez votre code dans le formulaire ci-dessous</h5>
         <form action="{{ path("useCouponCode_page") }}" method="post">
-            <div class="form-group">
+            <div class="form-group  mt-4">
                 <label for="couponCode">votre code</label>
                 <input type="text" name="couponCode" id="couponCode" class="form-control" placeholder="entrez votre code ici ...">
                 {% for message in app.flashes('unusedCode') %}
@@ -29,5 +29,57 @@
 
     <section id="videoPublicitaire">
         <h5>Regardez une vidéo afin de gagner vos tickets gratuitement</h5>
+        <div id="videoForTickets" class="d-flex justify-content-center mt-5">
+            {% for video in video %}
+                <div id="player"></div>
+                <script src="http://www.youtube.com/player_api"></script>
+                <script>
+                    var player;
+                    function onYouTubePlayerAPIReady() {
+                        player = new YT.Player('player', {
+                            height: '360',
+                            width: '640',
+                            videoId: '{{ video.url }}',
+                            playerVars: {
+                                'controls': 0,
+                                'disablekb': 1,
+                                'showinfo': 0,
+                            },
+                            events: {
+                                'onStateChange': onPlayerStateChange
+                            }
+                        });
+                    }
+                    // Lorsque la vidéo est fini
+                    function onPlayerStateChange(event) {
+                        if(event.data === 0) {
+                            $RemoveVideoDiv = document.getElementById('player').remove();
+                            var divVideo = document.getElementById('videoForTickets');
+
+                            //Création du formulaire
+                            var f = document.createElement("form");
+                            f.setAttribute('id', 'videoForm');
+                            f.setAttribute('action',"{{ path('earnTicket_page') }}");
+                            f.setAttribute('method',"post");
+                            document.getElementById('videoForTickets').appendChild(f);
+                            //création du boutton
+                            var b = document.createElement("button");
+                            var bText = document.createTextNode('Gagner {{ video.ticket }} tickets');
+                            b.setAttribute('type',"submit");
+                            b.setAttribute('class',"btn btn-success");
+                            b.setAttribute('name',"winTickets");
+                            b.setAttribute('value',"{{ video.id }}");
+                            b.appendChild(bText);
+                            document.getElementById('videoForm').appendChild(b);
+                        }
+                    }
+                </script>
+            {% endfor %}
+        </div>
     </section>
 {% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+
