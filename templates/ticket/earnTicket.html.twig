@@ -2,24 +2,29 @@
 
 {% block body %}
     <h1>Gagner des tickets</h1>
-    <p class="lead">Pour obtenir des tickets supplémentaires, vous pouvez entrer un code promo ou alors regarder des vidéos publicitaires.</p>
+    <p class="lead">Pour obtenir des tickets supplémentaires, vous pouvez entrer un code promo ou alors regarder des
+        vidéos publicitaires.</p>
     <section id="codePromo">
         <h5>Entrez votre code dans le formulaire ci-dessous</h5>
         <form action="{{ path("useCouponCode_page") }}" method="post">
             <div class="form-group  mt-4">
                 <label for="couponCode">votre code</label>
-                <input type="text" name="couponCode" id="couponCode" class="form-control" placeholder="entrez votre code ici ...">
-                {% for message in app.flashes('unusedCode') %}
-                    <div class="validCode">
+                <div class="d-flex  flex-wrap">
+                    <input type="text" name="couponCode" id="couponCode" class="form-control col-lg-4 col-md-6 col-sm-7 col-8"
+                           placeholder="entrez votre code ici ...">
+                    {% for message in app.flashes('unusedCode') %}
+                        <div class="alert alert-dismissible alert-success col-lg-4 col-md-6 col-sm-7 col-8">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('usedCode') %}
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
                         {{ message }}
                     </div>
                 {% endfor %}
-                {% for message in app.flashes('usedCode') %}
-                    <div class="unvalidCode">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-
+                </div>
             </div>
             <button type="submit" class="btn btn-success">Valider</button>
         </form>
@@ -35,6 +40,7 @@
                 <script src="http://www.youtube.com/player_api"></script>
                 <script>
                     var player;
+
                     function onYouTubePlayerAPIReady() {
                         player = new YT.Player('player', {
                             height: '360',
@@ -50,25 +56,26 @@
                             }
                         });
                     }
+
                     // Lorsque la vidéo est fini
                     function onPlayerStateChange(event) {
-                        if(event.data === 0) {
+                        if (event.data === 0) {
                             $RemoveVideoDiv = document.getElementById('player').remove();
                             var divVideo = document.getElementById('videoForTickets');
 
                             //Création du formulaire
                             var f = document.createElement("form");
                             f.setAttribute('id', 'videoForm');
-                            f.setAttribute('action',"{{ path('earnTicket_page') }}");
-                            f.setAttribute('method',"post");
+                            f.setAttribute('action', "{{ path('earnTicket_page') }}");
+                            f.setAttribute('method', "post");
                             document.getElementById('videoForTickets').appendChild(f);
                             //création du boutton
                             var b = document.createElement("button");
                             var bText = document.createTextNode('Gagner {{ video.ticket }} tickets');
-                            b.setAttribute('type',"submit");
-                            b.setAttribute('class',"btn btn-success");
-                            b.setAttribute('name',"winTickets");
-                            b.setAttribute('value',"{{ video.id }}");
+                            b.setAttribute('type', "submit");
+                            b.setAttribute('class', "btn btn-success");
+                            b.setAttribute('name', "winTickets");
+                            b.setAttribute('value', "{{ video.id }}");
                             b.appendChild(bText);
                             document.getElementById('videoForm').appendChild(b);
                         }
@@ -77,9 +84,6 @@
             {% endfor %}
         </div>
     </section>
-{% endblock %}
-
-{% block javascripts %}
 {% endblock %}
 
 

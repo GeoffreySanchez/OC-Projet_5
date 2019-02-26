@@ -2,13 +2,21 @@
 function verification() {
     $result = document.getElementById('result');
     $goal = document.getElementById('ticketsToGoal');
-    console.log($goal.innerHTML);
+    $range = document.getElementById('rangeValue');
     // Modifie la valeur des inputs si l'utilisateur saisit une valeur supérieur à son nombre de ticket
     if (parseInt($result.value) >= $result.max) {
         $result.value = $result.max;
     }
+    // Modifie la valeur de l'input result avec la valeur du range max si on dépasse sa valeur
+    if (parseInt($result.value) >= $range.max) {
+        $result.value = $range.max;
+    }
     // Modifie la valeur des inputs si l'utilisateur saisit une valeur supérieur au nombre de ticket requis pour le lot
-    if(parseInt($result.value) >= $goal.innerHTML) {
+    if (parseInt($result.value) >= $goal.innerHTML) {
         $result.value = $goal.innerHTML;
+    }
+    // Modifie le range max à 1000 si nombre de ticket necessaires sont supérieur à 1000
+    if ($range.max >= 1000) {
+        $range.max = 1000;
     }
 }

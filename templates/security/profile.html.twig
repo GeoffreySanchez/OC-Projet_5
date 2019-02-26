@@ -8,6 +8,18 @@
     {% else %}
         <div>
             <p class="lead">Avec votre espace personnelle, vous avez la possibilité de modifier vos données personnelles ou acheter des tickets supplémentaires.</p>
+            {% for message in app.flashes('accountActivation') %}
+                <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('accountAlreadyActivate') %}
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
             <ul>
                 <li>
                     <a href="{{ path('profileModification_page') }}">Modifier mes informations personnelles</a>

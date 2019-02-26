@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\CouponCode;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,13 +15,17 @@ class CreateCodeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('ticket')
-            ->add('maxUse')
+            ->add('name', TextType::class)
+            ->add('ticket', NumberType::class, [
+                'invalid_message' => 'Ce champ n\'accepte que les chiffres',
+            ])
+            ->add('maxUse', NumberType::class, [
+                'invalid_message' => 'Ce champ n\'accepte que les chiffres',
+            ])
             ->add('endDate', DateType::class, [
                 'data' => new \DateTime(),
             ])
-            ->add('code')
+            ->add('code', TextType::class)
         ;
     }
 

@@ -9,6 +9,7 @@ use App\Form\CreateCodeType;
 use App\Form\CreatePrizeType;
 use App\Repository\CouponCodeRepository;
 use App\Repository\UserCodeRepository;
+use App\Repository\VideoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,19 +66,38 @@ class CouponCodeController extends AbstractController
     /**
      * @Route("/profile/ticket/useCuponCode", name="useCouponCode_page")
      */
-    public function useCouponCode(Request $request, ObjectManager $manager, CouponCodeRepository $coupons, UserCodeRepository $UserCodes)
+    public function useCouponCode(Request $request, ObjectManager $manager, CouponCodeRepository $coupons, UserCodeRepository $UserCodes, VideoRepository $video)
     {
         $user = $this->getUser();
+        $videoToWatch = $video->getRandomUrl();
         $form = $request->request->get('couponCode');
+
         if ($form != null)
         {
             if ($coupons->findBy(array('code' => $form)))
             {
                 $usedCode = $coupons->findBy(array('code' => $form))[0];
                 $currentUse = $usedCode->getCurrentUse();
+                $maxUse = $usedCode->getMaxUse();
+                $usable = $usedCode->getUsable();
+
+                // Message d'erreur si le code n'est plus valide (trop d'utilisation)
+                if($usable == 0)
+                {
+                    $this->addFlash(
+                        'usedCode',
+                        'Ce code n\'est plus valide !'
+                    );
+                    return $this->redirectToRoute('useCouponCode_page');
+                }
+                // Rend le code inutilisable si il atteint son maximum d'utilisation
+                if($currentUse >= $maxUse & $usable == 1)
+            {
+                dd("blabla");
+            }
 
                 //Si le code envoyé par l'utilisateur est déjà utilisé
-                if ($UserCodes->findBy(array('couponCode' => $usedCode)) & $UserCodes->findBy(array('user' => $user)))
+                elseif ($UserCodes->findBy(array('couponCode' => $usedCode)) & $UserCodes->findBy(array('user' => $user)))
                 {
                     $this->addFlash(
                         'usedCode',
@@ -117,6 +137,8 @@ class CouponCodeController extends AbstractController
             );
             return $this->redirectToRoute('useCouponCode_page');
         }
-        return $this->render('ticket/earnTicket.html.twig');
+        return $this->render('ticket/earnTicket.html.twig', [
+            'video' => $videoToWatch
+        ]);
     }
 }

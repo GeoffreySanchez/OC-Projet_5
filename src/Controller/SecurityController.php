@@ -20,18 +20,32 @@ class SecurityController extends AbstractController
     /**
      * @Route("/inscription", name="inscription_page")
      */
-    public function registration(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder) {
+    public function registration(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer) {
         $user = new User();
 
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if($form->isSubmitted() && $form->isValid())
+        {
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
 
             $manager->persist($user);
             $manager->flush();
+
+            $message = (new \Swift_Message('Hello Email'))
+                ->setFrom('projet5@geoffreysanchez-book.fr')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                    // templates/emails/registration.html.twig
+                        'security/accountValidationEmail.html.twig', [
+                            'user' => $user
+                        ]),
+                    'text/html'
+                );
+            $mailer->send($message);
 
             return $this->redirectToRoute('login_page');
         }
@@ -78,8 +92,10 @@ class SecurityController extends AbstractController
         $form = $this->createForm(ModifyUserType::class, $currentUser);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
-            if($form->get('password')->getData()) {
+        if($form->isSubmitted() && $form->isValid())
+        {
+            if($form->get('password')->getData())
+            {
                 $hash = $encoder->encodePassword($currentUser, $form->getData()->getPassword());
                 $currentUser->setPassword($hash);
             }
@@ -124,7 +140,8 @@ class SecurityController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $users = $repo->findAll();
 
-        if($action = null != $request->request->get("action")) {
+        if($action = null != $request->request->get("action"))
+        {
             $user->handleUser($request->request->get("action"));
 
             $manager->persist($user);
@@ -134,6 +151,46 @@ class SecurityController extends AbstractController
         return $this->render('security/adminUser.html.twig', [
             'users' => $users,
             'id' => $users
+        ]);
+    }
+
+    /**
+     * @Route("/profile/activation/{key}", name="activation_page")
+     */
+    public function accountActivation(ObjectManager $manager, Request $request) {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        $urlKey = $request->attributes->get('key');
+        $userKey = $user->getConfirmKey();
+        dump($user);
+        if($user->getActive() == false)
+        {
+            if($urlKey == $userKey)
+            {
+                $user->setActive(true);
+                $user->setRoles('ROLE_USER');
+
+                $manager->persist($user);
+                $manager->flush();
+
+                $this->addFlash(
+                    'accountActivation',
+                    'Votre compte est activé !'
+                );
+                return $this->redirectToRoute('user_page');
+            }
+        }
+        elseif ($user->getActive() == true)
+        {
+            $this->addFlash(
+                'accountAlreadyActivate',
+                'Votre compte est déjà activé !'
+            );
+            return $this->redirectToRoute('user_page');
+        }
+
+        return $this->render('security/profile.html.twig', [
+            'user' => $user,
         ]);
     }
 }

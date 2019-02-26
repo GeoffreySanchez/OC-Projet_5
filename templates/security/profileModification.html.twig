@@ -9,6 +9,7 @@
         <div class="card-body">
             <h5 class="card-title">Adresse postale</h5>
             <p class="card-text">{{ app.user.adresse }}</p>
+            <p>{{ app.user.zipCode }} {{ app.user.city }}</p>
         </div>
         <div class="card-body">
             <h5 class="card-title">Adresse email</h5>
@@ -17,7 +18,9 @@
     </div>
 
     {{ form_start(form) }}
-    {{ form_row(form.adresse, {'label': 'Adresse postale', 'attr': {'placeholder': 'Votre nouvelle adresse postale', 'value': ''}}) }}
+    {{ form_row(form.adresse, {'label': 'Adresse postale', 'attr': {'placeholder': 'Votre nouvelle adresse', 'value': ''}}) }}
+    {{ form_row(form.zipCode, {'label': 'Code postal', 'attr': {'placeholder': 'Votre nouveau code postal', 'value': ''}}) }}
+    {{ form_row(form.city, {'label': 'Ville', 'attr': {'placeholder': 'Votre nouvelle ville', 'value': ''}}) }}
     <hr class="my-4">
     {{ form_row(form.email, {'label': 'Adresse email', 'attr': {'placeholder': 'Votre nouvelle adresse email'}}) }}
     <hr class="my-4">

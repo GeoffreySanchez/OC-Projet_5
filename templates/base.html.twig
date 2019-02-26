@@ -26,7 +26,7 @@
                         <a class="nav-link" href="{{ path('infos_page') }}">Plus d'infos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('showPrize_page') }}">Tout les tirages</a>
+                        <a class="nav-link" href="{{ path('showPrize_page') }}">Tous les tirages</a>
                     </li>
                 </ul>
                 <ul id="secondNavbar" class="navbar-nav mr-5">
@@ -38,6 +38,9 @@
                         <a class="nav-link" href="{{ path('login_page') }}">Identification</a>
                     </li>
                 {% else %}
+                    <li class="nav-item">
+                        <p class="nav-link" id="userTickets">{{ app.user.tickets }} tickets</p>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('user_page') }}">Mon compte</a>
                     </li>

@@ -111,14 +111,10 @@ input[type=range]::-ms-range-track  {
     background: #ddd;
 }
 
-.validCode {
-    color: green;
+.close {
+    padding-top: 9px !important;
 }
 
-.unvalidCode {
-    color: red;
-}
-
-.form-red {
-    border: 1px solid rgba(232, 21, 12, 0.5);
+.navbar-collapse {
+    align-items: end;
 }

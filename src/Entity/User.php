@@ -55,6 +55,16 @@ class User implements UserInterface
     private $adresse;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $zipCode;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $city;
+
+    /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min="8", minMessage="Votre mot de passe est trop court, 8 caractères minimum")
      * @Assert\NotBlank()
@@ -86,6 +96,17 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $roles = 'ROLE_VISITOR';
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $confirmKey;
+
+    public function __construct()
+    {
+        $rand = random_bytes(30);
+        $this->confirmKey = md5("confirmKey".$rand."",false);
+    }
 
     public function getId(): ?int
     {
@@ -149,10 +170,10 @@ class User implements UserInterface
     }
 
     public function getAdresse(): ?string
-    {
+{
 
-        return $this->adresse;
-    }
+    return $this->adresse;
+}
 
     public function setAdresse($adresse): self
     {
@@ -163,6 +184,39 @@ class User implements UserInterface
         }
         return $this;
     }
+
+    public function getCity(): ?string
+    {
+
+        return $this->city;
+    }
+
+    public function setCity($city): self
+    {
+        if($city == '') {
+            $this->city = $this->city;
+        } else {
+            $this->city = $city;
+        }
+        return $this;
+    }
+
+    public function getZipCode(): ?string
+    {
+
+        return $this->zipCode;
+    }
+
+    public function setZipCode($zipCode): self
+    {
+        if($zipCode == '') {
+            $this->zipCode = $this->zipCode;
+        } else {
+            $this->zipCode = $zipCode;
+        }
+        return $this;
+    }
+
 
     public function getPassword(): ?string
     {
@@ -199,6 +253,18 @@ class User implements UserInterface
     public function setActive(string $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getConfirmKey(): ?string
+    {
+        return $this->confirmKey;
+    }
+
+    public function setConfirmKey($confirmKey): self
+    {
+        $this->confirmKey = $confirmKey;
 
         return $this;
     }
