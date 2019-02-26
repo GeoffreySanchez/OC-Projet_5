@@ -24,7 +24,7 @@
                 {% if prize.visible == 1 %}
                     {% if is_granted('ROLE_USER') %}
                         {% if app.user.tickets == 0 %}
-                            <a href="#">Récupérer des tickets</a>
+                            <a href="{{ path('earnTicket_page') }}">Récupérer des tickets</a>
                         {% else %}
                             <a href="{{ path('playPrize_page', {'id': prize.id}) }}" class="card-link">Jouer des tickets</a>
                         {% endif %}

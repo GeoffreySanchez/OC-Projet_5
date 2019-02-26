@@ -19,7 +19,7 @@ class UserCode
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\joinColumn(onDelete="CASCADE")
      */
     private $user;
 

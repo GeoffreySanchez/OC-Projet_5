@@ -18,6 +18,7 @@ class Ticket
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $user ;
 

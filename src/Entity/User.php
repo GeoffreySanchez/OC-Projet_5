@@ -308,4 +308,15 @@ class User implements UserInterface
                 $this->setRoles("ROLE_USER");
             }
     }
+
+    public function checkKey($key)
+    {
+        return $key == $this->confirmKey;
+    }
+
+    public function activeUser()
+    {
+        $this->setActive(true);
+        $this->setRoles('ROLE_USER');
+    }
 }

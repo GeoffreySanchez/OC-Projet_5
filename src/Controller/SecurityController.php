@@ -8,10 +8,12 @@ use App\Form\RegistrationType;
 use App\Repository\ModelPrizeRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
@@ -20,7 +22,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/inscription", name="inscription_page")
      */
-    public function registration(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer) {
+    public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer) {
         $user = new User();
 
         $form = $this->createForm(RegistrationType::class, $user);
@@ -34,7 +36,22 @@ class SecurityController extends AbstractController
             $manager->persist($user);
             $manager->flush();
 
-            $message = (new \Swift_Message('Hello Email'))
+            // Connexion automatique de l'utilisateur
+            $token = new UsernamePasswordToken(
+                $user,
+                $hash,
+                'main',
+                $user->getRoles()
+            );
+            $this->get('security.token_storage')->setToken($token);
+            $this->get('session')->set('_security_main', serialize($token));
+
+            $this->addFlash(
+                'accountCreationSuccess',
+                'Bienvenue ! votre compte a été créé avec succès, vous allez recevoir un mail pour valider votre inscription');
+
+            // Envoie par email le lien pour que l'utilisateur puisse valider son compte
+            $message = (new \Swift_Message('Activation de votre compte GL & HF'))
                 ->setFrom('projet5@geoffreysanchez-book.fr')
                 ->setTo($user->getEmail())
                 ->setBody(
@@ -47,14 +64,10 @@ class SecurityController extends AbstractController
                 );
             $mailer->send($message);
 
-            return $this->redirectToRoute('login_page');
+            return $this->redirectToRoute('user_page');
         }
-
         return $this->render('security/registration.html.twig', [
             'form' => $form->CreateView()
-        ]);
-        return $this->render('security/registration.html.twig', [
-            'controller_name' => 'SecurityController',
         ]);
     }
 
@@ -75,8 +88,13 @@ class SecurityController extends AbstractController
      * @Route("/profile", name="user_page")
      */
     public function profile() {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        //$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
+
+        // Donne le bon rôle quand le compte est activé
+        $token = new UsernamePasswordToken($user,null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
         return $this->render('security/profile.html.twig', [
             'user' => $user
         ]);
@@ -85,7 +103,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile/modification", name="profileModification_page")
      */
-    public function profileModification(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder) {
+    public function profileModification(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $currentUser = $this->getUser();
 
@@ -100,7 +118,6 @@ class SecurityController extends AbstractController
                 $currentUser->setPassword($hash);
             }
 
-            $manager->persist($currentUser);
             $manager->flush();
             return $this->redirectToRoute('profileModification_page');
         }
@@ -157,20 +174,16 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile/activation/{key}", name="activation_page")
      */
-    public function accountActivation(ObjectManager $manager, Request $request) {
+    public function accountActivation(EntityManagerInterface $manager, $key) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        /* @var \App\Entity\User $user */
         $user = $this->getUser();
-        $urlKey = $request->attributes->get('key');
         $userKey = $user->getConfirmKey();
-        dump($user);
-        if($user->getActive() == false)
+        if(!$user->getActive())
         {
-            if($urlKey == $userKey)
+            if($user->checkKey($key))
             {
-                $user->setActive(true);
-                $user->setRoles('ROLE_USER');
-
-                $manager->persist($user);
+                $user->activeUser();
                 $manager->flush();
 
                 $this->addFlash(
@@ -184,8 +197,8 @@ class SecurityController extends AbstractController
         {
             $this->addFlash(
                 'accountAlreadyActivate',
-                'Votre compte est déjà activé !'
-            );
+                'Votre compte est déjà activé !');
+
             return $this->redirectToRoute('user_page');
         }
 
