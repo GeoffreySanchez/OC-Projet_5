@@ -203,11 +203,21 @@ class Prize
 
     public function strEndDate()
     {
-        return $this->endDate->format('d-m-Y à  H:i:s');
+        return $this->endDate->format('d-m-Y à H:i:s');
     }
 
     public function nombreJoueur($nombre){
         $this->nombreJoueur = $nombre;
         return $this;
+    }
+
+    public function endprize()
+    {
+        $currentDate = new \DateTime();
+        if ($this->endDate <= $currentDate)
+        {
+            $this->visible = false;
+
+        }
     }
 }

@@ -47,7 +47,6 @@ class TicketController extends AbstractController
                 $ticket->setUser($user);
                 $ticket->setPrize($prize);
                 $ticket->setNumber();
-
                 $manager->persist($ticket);
                 $manager->flush();
             }
@@ -67,10 +66,10 @@ class TicketController extends AbstractController
                 $manager->persist($prize);
                 $manager->flush();
 
-                return $this->redirectToRoute('showPrize_page');
+                return $this->redirectToRoute('showEndedPrize_page');
             }
 
-            return $this->redirectToRoute('showPrize_page');
+            return $this->redirectToRoute('showEndedPrize_page');
         }
 
         return $this->render('ticket/playPrize.html.twig', [

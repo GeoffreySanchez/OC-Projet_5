@@ -2,7 +2,7 @@
 
 
 {% block body %}
-    <h1>Vous voulez modifier vos informations personnelles ?</h1>
+    <h1 class="my-4">Vous voulez modifier vos informations personnelles ?</h1>
     <p class="lead">Remplissez les champs dont vous voulez modifier les informations.</p>
     <div class="card border-dark mb-3" style="max-width: 20rem;">
         <div class="card-header">Vos informations actuelles</div>
@@ -19,8 +19,8 @@
 
     {{ form_start(form) }}
     {{ form_row(form.adresse, {'label': 'Adresse postale', 'attr': {'placeholder': 'Votre nouvelle adresse', 'value': ''}}) }}
-    {{ form_row(form.zipCode, {'label': 'Code postal', 'attr': {'placeholder': 'Votre nouveau code postal', 'value': ''}}) }}
-    {{ form_row(form.city, {'label': 'Ville', 'attr': {'placeholder': 'Votre nouvelle ville', 'value': ''}}) }}
+    {{ form_row(form.zipCode, {'id': 'zipCode', 'label': 'Code postal', 'attr': {'placeholder': 'Votre code postal', 'minlength': '5', 'maxlength': '5', 'onkeyup': 'city()', 'value': ''}}) }}
+    {{ form_row(form.city, {'id': 'cityName', 'label': 'Ville', 'attr': {'readonly': 'readonly', 'value': ''}}) }}
     <hr class="my-4">
     {{ form_row(form.email, {'label': 'Adresse email', 'attr': {'placeholder': 'Votre nouvelle adresse email'}}) }}
     <hr class="my-4">
@@ -28,4 +28,9 @@
     <button type="submit" class="btn btn-success">Valider</button>
     {{ form_end(form) }}
 
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/ajax.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/formCity.js') }}"></script>
 {% endblock %}

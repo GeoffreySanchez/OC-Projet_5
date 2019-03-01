@@ -1,8 +1,8 @@
-{% extends  'base.html.twig'%}
+{% extends  'base.html.twig' %}
 
 {% block body %}
 
-    <h1>Administration d'utilisateur</h1>
+    <h1 class="my-4">Administration d'utilisateur</h1>
     <p class="lead">Cette section vous permet de gérer les utilisateurs du site</p>
 
     <section class="users">
@@ -17,41 +17,49 @@
                 <td>Role</td>
                 <td>Actions</td>
             </tr>
-        {% for user in users %}
-            <tr scope="col">
-                <td>{{ user.id }}</td>
-                <td>{{ user.firstname }}</td>
-                <td>{{ user.lastname }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.adresse }}</td>
-                <td>
-                    {% for role in user.roles %}
-                        {% if role == "ROLE_ADMIN" %}
-                            Administrateur
-                        {% elseif role == "ROLE_USER" %}
-                            Membre activé
-                        {% elseif role == "ROLE_VISITOR" %}
-                            Membre désactivé
-                        {% elseif role == "ROLE_SUPER_ADMIN" %}
-                            Super administrateur
-                        {% endif %}
-                    {% endfor %}
-                </td>
+            {% for user in users %}
+                <tr scope="col">
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.firstname }}</td>
+                    <td>{{ user.lastname }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.adresse }}</td>
+                    <td>
+                        {% for role in user.roles %}
+                            {% if role == "ROLE_ADMIN" %}
+                                Administrateur
+                            {% elseif role == "ROLE_USER" %}
+                                Membre activé
+                            {% elseif role == "ROLE_VISITOR" %}
+                                Membre désactivé
+                            {% elseif role == "ROLE_SUPER_ADMIN" %}
+                                Super administrateur
+                            {% endif %}
+                        {% endfor %}
+                    </td>
                     <td>
                         <form action="{{ path("upgradeToAdmin_page", {"id" : user.id}) }}" method="post">
                             {% if user.roles == ["ROLE_USER"] %}
-                                <button type="submit" name="action" value="upToAdmin" class="btn btn-outline-success">Passer administrateur</button>
-                                <button type="submit" name="action" value="ban" class="btn btn-outline-danger">Désactiver le compte</button>
+                                <button type="submit" name="action" value="upToAdmin" class="btn btn-outline-success">
+                                    Passer administrateur
+                                </button>
+                                <button type="submit" name="action" value="ban" class="btn btn-outline-danger">
+                                    Désactiver le compte
+                                </button>
                             {% elseif user.roles == ["ROLE_VISITOR"] %}
-                                <button type="submit" name="action" value="valid" class="btn btn-outline-success">Activer le compte</button>
+                                <button type="submit" name="action" value="valid" class="btn btn-outline-success">
+                                    Activer le compte
+                                </button>
                             {% elseif user.roles == ["ROLE_ADMIN"] %}
-                                <button type="submit" name="action" value="downToUser" class="btn btn-outline-danger">Passer membre</button>
+                                <button type="submit" name="action" value="downToUser" class="btn btn-outline-danger">
+                                    Passer membre
+                                </button>
                             {% endif %}
                         </form>
                     </td>
-            </tr>
-        {% endfor %}
+                </tr>
+            {% endfor %}
         </table>
     </section>
 

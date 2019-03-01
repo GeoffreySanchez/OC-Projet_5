@@ -36,53 +36,14 @@
         <h5>Regardez une vidéo afin de gagner vos tickets gratuitement</h5>
         <div id="videoForTickets" class="d-flex justify-content-center mt-5">
             {% for video in video %}
-                <div id="player" data-test="{{ video.url }}"></div>
-                <script src="http://www.youtube.com/player_api"></script>
-                <script>
-                    var player;
-
-                    function onYouTubePlayerAPIReady() {
-                        player = new YT.Player('player', {
-                            height: '360',
-                            width: '640',
-                            videoId: '{{ video.url }}',
-                            playerVars: {
-                                'controls': 0,
-                                'disablekb': 1,
-                            },
-                            events: {
-                                'onStateChange': onPlayerStateChange
-                            }
-                        });
-                    }
-
-                    // Lorsque la vidéo est fini
-                    function onPlayerStateChange(event) {
-                        if (event.data === 0) {
-                            $RemoveVideoDiv = document.getElementById('player').remove();
-                            var divVideo = document.getElementById('videoForTickets');
-
-                            //Création du formulaire
-                            var f = document.createElement("form");
-                            f.setAttribute('id', 'videoForm');
-                            f.setAttribute('action', "{{ path('earnTicket_page') }}");
-                            f.setAttribute('method', "post");
-                            document.getElementById('videoForTickets').appendChild(f);
-                            //création du boutton
-                            var b = document.createElement("button");
-                            var bText = document.createTextNode('Gagner {{ video.ticket }} tickets');
-                            b.setAttribute('type', "submit");
-                            b.setAttribute('class', "btn btn-success");
-                            b.setAttribute('name', "winTickets");
-                            b.setAttribute('value', "{{ video.id }}");
-                            b.appendChild(bText);
-                            document.getElementById('videoForm').appendChild(b);
-                        }
-                    }
-                </script>
+                <div id="player"  data-video-url="{{ video.url }}" data-video-id="{{ video.id }}" data-video-ticket="{{ video.ticket }}" data-video-path="{{ path('earnTicket_page') }}"></div>
             {% endfor %}
         </div>
     </section>
 {% endblock %}
 
+{% block javascripts %}
+    <script src="http://www.youtube.com/player_api"></script>
+    <script type="text/javascript" src="{{ asset('js/youtubePlayer.js') }}"></script>
+{% endblock %}
 

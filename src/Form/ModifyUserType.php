@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use Doctrine\DBAL\Types\StringType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,9 +29,7 @@ class ModifyUserType extends AbstractType
                 'invalid_message' => 'Votre code postal ne peut pas contenir de lettre',
                 'required' => false,
             ])
-            ->add('city', TextType::class, [
-                'required' => false,
-            ])
+            ->add('city', ChoiceType::class)
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
                 'invalid_message' => 'Les adresses emails doivent être identiques',

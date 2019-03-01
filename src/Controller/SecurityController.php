@@ -27,8 +27,10 @@ class SecurityController extends AbstractController
 
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
+        $getOptionCity = $form->all()['city']->getViewData();
+        $modifyCity = $form->getData()->setCity($getOptionCity);
 
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted())
         {
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
@@ -48,7 +50,7 @@ class SecurityController extends AbstractController
 
             $this->addFlash(
                 'accountCreationSuccess',
-                'Bienvenue ! votre compte a été créé avec succès, vous allez recevoir un mail pour valider votre inscription');
+                'Bienvenue ! votre compte a été créé avec succès');
 
             // Envoie par email le lien pour que l'utilisateur puisse valider son compte
             $message = (new \Swift_Message('Activation de votre compte GL & HF'))
@@ -109,9 +111,11 @@ class SecurityController extends AbstractController
 
         $form = $this->createForm(ModifyUserType::class, $currentUser);
         $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid())
+        $getOptionCity = $form->all()['city']->getViewData();
+        $modifyCity = $form->getData()->setCity($getOptionCity);
+        if($form->isSubmitted())
         {
+
             if($form->get('password')->getData())
             {
                 $hash = $encoder->encodePassword($currentUser, $form->getData()->getPassword());

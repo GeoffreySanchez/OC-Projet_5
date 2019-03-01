@@ -26,7 +26,7 @@
                         <a class="nav-link" href="{{ path('infos_page') }}">Plus d'infos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('showPrize_page') }}">Tous les tirages</a>
+                        <a class="nav-link" href="{{ path('showEndedPrize_page') }}">Tous les tirages terminés</a>
                     </li>
                 </ul>
                 <ul id="secondNavbar" class="navbar-nav mr-5">
@@ -39,7 +39,7 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <p class="nav-link" id="userTickets">{{ app.user.tickets }} tickets</p>
+                        <a href="{{ path('earnTicket_page') }}" class="nav-link" id="userTickets"> <i class="fas fa-ticket-alt rotate"></i> {{ app.user.tickets }} tickets <i class="fas fa-ticket-alt rotate"></i></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('user_page') }}">Mon compte</a>
@@ -63,6 +63,7 @@
             <i class="fa fa-chevron-up"></i>
         </a>
         {% block javascripts %}
+
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

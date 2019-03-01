@@ -4,6 +4,7 @@
     <h1>Liste des tirages en cours</h1>
     <div class="d-flex flex-wrap">
     {% for prize in prizes %}
+        {% if prize.visible == false and prize.currentTicket == prize.goal %}
         <div class="card mb-4 ml-auto mr-auto text-center d-inline-flex" id="{{ prize.id }}">
             <h4 class="card-header">{{ prize.name }}</h4>
             <div  class="">
@@ -19,7 +20,11 @@
                     </div>
                 </li>
                 {% endif %}
-                <li class="list-group-item">Fin du lot: {{ prize.strEndDate }}</li>
+                {% if  prize.visible == 1 %}
+                    <li class="list-group-item timer">Fini le: {{ prize.strEndDate }}</li>
+                    {% else %}
+                    <li class="list-group-item timer">Ce lot est terminé !</li>
+                {% endif %}
                 <li class="list-group-item">
                 {% if prize.visible == 1 %}
                     {% if is_granted('ROLE_USER') %}
@@ -33,12 +38,16 @@
                     {% elseif app.user.active == 0 %}
                         <p class="list-group-p">Votre compte n'est pas actif</p>
                     {% endif %}
+                {% elseif prize.visible == 0 and prize.currentTicket < prize.goal %}
+                    <p class="list-group-p">Aucun joueur enregistré avant le temps imparti</p>
+                    <p class="list-group-p">Dommage pour vous !</p>
                 {% else %}
                     <p class="list-group-p">Ce lot à été remporté par: {{ prize.winner }}</p>
                 {% endif %}
                 </li>
             </ul>
         </div>
+        {% endif %}
     {% endfor %}
         </div>
 {% endblock %}
