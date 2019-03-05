@@ -1,10 +1,29 @@
 {% extends 'base.html.twig' %}
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block title %}Inscrivez-vous{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="GL & HF, créez votre compte gratuitement !"/>
+    <meta property="og:description"
+          content="Venez créer votre compte afin de gagner des tonnes de lots gratuitement !"/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="GL & HF, créez votre compte gratuitement !">
+    <meta name="twitter:description"
+          content="Venez créer votre compte afin de gagner des tonnes de lots gratuitement !">
+{% endblock %}
 
 {% block body %}
     <h1 class="my-4">Vous voulez vous inscrire ?</h1>
     <p>Remplissez le formulaire suivant en renseignant tout les champs</p>
-
     {{ form_start(form) }}
     {{ form_row(form.firstName, {'label': 'Prénom', 'attr': {'placeholder': 'Votre prénom'}}) }}
     {{ form_row(form.lastName, {'label': 'Nom', 'attr': {'placeholder': 'Votre nom'}}) }}
@@ -17,7 +36,6 @@
     {{ form_row(form.confirm_password, {'label': 'Confirmation du mot de passe', 'attr': {'placeholder': 'Repetez votre mot de passe'}}) }}
     <button type="submit" class="btn btn-success">inscription</button>
     {{ form_end(form) }}
-
 {% endblock %}
 
 {% block javascripts %}

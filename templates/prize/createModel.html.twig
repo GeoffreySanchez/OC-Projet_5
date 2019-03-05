@@ -1,7 +1,54 @@
 {% extends 'base.html.twig' %}
+{% block title %}
+    {% if editMode %}
+        Modifier le modèle
+    {% else %}
+        Créer un nouveau modèle
+    {% endif %}
+{% endblock %}
+{% block reseauSociaux %}
+    {% if editMode %}
+        <meta property="og:url"
+              content="{{ app.request.uri }}"/>
+        <meta property="og:type"
+              content="website"/>
+        <meta property="og:title"
+              content="Modification d'un modèle"/>
+        <meta property="og:description"
+              content="[ADMIN] Vous voulez modifier un modèle de lot ? c'est ici que ça se passe"/>
+        <meta property="og:image"
+              content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+        <!-- Twitter -->
+        <meta name="twitter:card"
+              content="summary">
+        <meta name="twitter:title"
+              content="Modification d'un modèle">
+        <meta name="twitter:description"
+              content="[ADMIN] Vous voulez modifier un modèle de lot ? c'est ici que ça se passe">
+    {% else %}
+        <!-- Facebook -->
+        <meta property="og:url"
+              content="{{ app.request.uri }}"/>
+        <meta property="og:type"
+              content="creation"/>
+        <meta property="og:title"
+              content="Création d'un modèle"/>
+        <meta property="og:description"
+              content="[ADMIN] Vous voulez créer un modèle de lot ? c'est ici que ça se passe"/>
+        <meta property="og:image"
+              content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+        <!-- Twitter -->
+        <meta name="twitter:card"
+              content="summary">
+        <meta name="twitter:title"
+              content="Liste des lots terminés">
+        <meta name="twitter:description"
+              content="[ADMIN] Vous voulez créer un modèle de lot ? c'est ici que ça se passe">
+    {% endif %}
+{% endblock %}
 
 {% block body %}
-    <h1>
+    <h1 class="my-4">
         {% if editMode %}
             Modifier le modèle
         {% else %}

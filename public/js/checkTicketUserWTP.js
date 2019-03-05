@@ -13,7 +13,7 @@ function verification() {
         $result.value = $goal.innerHTML;
     }
     // Modifie le range max pour ne pas dépasser la limite du lot
-    if(parseInt($range.value) >= $goal.innerHTML) {
+    if (parseInt($range.value) >= $goal.innerHTML) {
         $range.max = $goal.innerHTML;
     }
     // Modifie le range max à 1000 si nombre de ticket necessaires sont supérieur à 1000

@@ -1,4 +1,25 @@
 {% extends 'base.html.twig' %}
+{% block title %}Liste des lots{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="infos"/>
+    <meta property="og:title"
+          content="Liste des lots"/>
+    <meta property="og:description"
+          content="[ADMIN] Consulter la liste des lots."/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="Liste des lots">
+    <meta name="twitter:description"
+          content="[ADMIN] Consulter la liste des lots.">
+{% endblock %}
 
 {% block body %}
     <h1 class="my-4">Liste des lots</h1>

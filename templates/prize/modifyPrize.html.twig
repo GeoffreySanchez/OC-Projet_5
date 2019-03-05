@@ -1,7 +1,28 @@
 {% extends 'base.html.twig' %}
+{% block title %}Modifier un lot{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="modification d'un lot"/>
+    <meta property="og:description"
+          content="[ADMIN] Cette page vous permet de modifier les lots présents sur le site."/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="modification d'un lot">
+    <meta name="twitter:description"
+          content="[ADMIN] Cette page vous permet de modifier les lots présents sur le site.">
+{% endblock %}
 
 {% block body %}
-    <h1>Modification du lot</h1>
+    <h1 class="my-4">Modification du lot</h1>
     <p class="lead">Pour modifier une ou plusieurs données de ce lot, veuillez remplacer les données présentent dans les champs voulus</p>
 
     {{ form_start(form) }}

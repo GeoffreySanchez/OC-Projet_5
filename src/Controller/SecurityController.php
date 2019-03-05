@@ -5,13 +5,10 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ModifyUserType;
 use App\Form\RegistrationType;
-use App\Repository\ModelPrizeRepository;
 use App\Repository\UserRepository;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -157,7 +154,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("admin/user/{id}", name="upgradeToAdmin_page")
      */
-    public function adminModifyRole(User $user, UserRepository $repo, ObjectManager $manager, Request $request) {
+    public function adminModifyRole(User $user, UserRepository $repo, EntityManagerInterface $manager, Request $request) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $users = $repo->findAll();
 

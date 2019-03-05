@@ -3,13 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Prize;
-use App\Entity\User;
 use App\Entity\Ticket;
 use App\Repository\TicketRepository;
-use App\Repository\UserRepository;
 use App\Repository\VideoRepository;
-use Doctrine\Common\Persistence\ObjectManager;
-use phpDocumentor\Reflection\Types\Mixed_;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +16,7 @@ class TicketController extends AbstractController
     /**
      * @Route("/tirages/{id}/jouer", name="playPrize_page")
      */
-    public function playPrize(Prize $prize, ObjectManager $manager, Request $request, TicketRepository $tickets)
+    public function playPrize(Prize $prize, EntityManagerInterface $manager, Request $request, TicketRepository $tickets)
     {
         $user = $this->getUser();
 
@@ -50,8 +47,6 @@ class TicketController extends AbstractController
                 $manager->persist($ticket);
                 $manager->flush();
             }
-            $manager->persist($prize);
-            $manager->persist($user);
             $manager->flush();
 
             // Tirage au sort du gagnant du lot quand celui-ci atteint le nombre de ticket maximal
@@ -61,15 +56,13 @@ class TicketController extends AbstractController
                 $randWinnerTicket = array_rand($collectTickets, 1);
                 $winner = $tickets->find($randWinnerTicket)->getUser()->getUsername();
 
-                $prize->setWinner($winner);
-                $prize->setVisible('0');
-                $manager->persist($prize);
+                $winnerIs = $prize->winnerIs($winner);
                 $manager->flush();
 
                 return $this->redirectToRoute('showEndedPrize_page');
             }
 
-            return $this->redirectToRoute('showEndedPrize_page');
+            return $this->redirectToRoute('main_page');
         }
 
         return $this->render('ticket/playPrize.html.twig', [
@@ -80,7 +73,7 @@ class TicketController extends AbstractController
     /**
      * @Route("/profile/ticket", name="earnTicket_page")
      */
-    public function earnTicket(VideoRepository $video, ObjectManager $manager, Request $request)
+    public function earnTicket(VideoRepository $video, EntityManagerInterface $manager, Request $request)
     {
         $user = $this->getUser();
         $videoToWatch = $video->getRandomUrl();
@@ -93,7 +86,6 @@ class TicketController extends AbstractController
             $earnTickets = $user->getTickets() + $TicketVideoWatched[0]->getTicket();
             $addTicketsToUser = $user->setTickets($earnTickets);
 
-            $manager->persist($user);
             $manager->flush();
 
             return $this->redirectToRoute('earnTicket_page');

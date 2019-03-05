@@ -9,7 +9,7 @@ use App\Form\ModifyPrizeType;
 use App\Form\NewModelPrizeType;
 use App\Repository\ModelPrizeRepository;
 use App\Repository\PrizeRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,7 +36,7 @@ class PrizeController extends AbstractController
      * @Route("/admin/model/new", name="newModel_page")
      * @Route("/admin/model/modify/{id}", name="modifyModel_page")
      */
-    public function manageModel(Request $request, ObjectManager $manager, ModelPrize $model = null)
+    public function manageModel(Request $request, EntityManagerInterface $manager, ModelPrize $model = null)
     {
         if(!$model)
         {
@@ -82,7 +82,7 @@ class PrizeController extends AbstractController
      * @Route("/admin/prize/new", name="createPrize_page")
      * @Route("/admin/prize/new/{id}", name="createPrizeId_page")
      */
-    public function createPrize(ModelPrizeRepository $model, Request $request, ObjectManager $manager, Prize $prize = null)
+    public function createPrize(ModelPrizeRepository $model, Request $request, EntityManagerInterface $manager, Prize $prize = null)
     {
         $models = $model->findAll();
         $modelPick = null;
@@ -118,7 +118,7 @@ class PrizeController extends AbstractController
     /**
      * @Route("/admin/prize/modify/{id}", name="modifyPrize_page")
      */
-    public function modifyPrize(Request $request, ObjectManager $manager, Prize $prize)
+    public function modifyPrize(Request $request, EntityManagerInterface $manager, Prize $prize)
     {
         $form = $this->createForm(ModifyPrizeType::class, $prize);
         $form->handleRequest($request);

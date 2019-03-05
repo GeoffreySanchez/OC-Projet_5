@@ -1,10 +1,29 @@
 {% extends  'base.html.twig' %}
+{% block title %}Administration des utilisateurs{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="Administration des membres"/>
+    <meta property="og:description"
+          content="[ADMIN] Cette page est faite pour administrer les droits des utilisateurs."/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="Administration des membres">
+    <meta name="twitter:description"
+          content="[ADMIN] Cette page est faite pour administrer les droits des utilisateurs.">
+{% endblock %}
 
 {% block body %}
-
     <h1 class="my-4">Administration d'utilisateur</h1>
     <p class="lead">Cette section vous permet de gérer les utilisateurs du site</p>
-
     <section class="users">
         <table class="table table-hover">
             <tr scope="col">
@@ -62,5 +81,4 @@
             {% endfor %}
         </table>
     </section>
-
 {% endblock %}

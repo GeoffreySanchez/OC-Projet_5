@@ -211,13 +211,18 @@ class Prize
         return $this;
     }
 
-    public function endprize()
+    public function endPrize()
     {
         $currentDate = new \DateTime();
         if ($this->endDate <= $currentDate)
         {
             $this->visible = false;
-
         }
+    }
+
+    public function winnerIs($winnerIs)
+    {
+        $this->winner = $winnerIs;
+        $this->visible = false;
     }
 }

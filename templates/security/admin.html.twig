@@ -1,4 +1,25 @@
 {% extends  'base.html.twig'%}
+{% block title %}Panneau d'administration{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="Panneau d'administration"/>
+    <meta property="og:description"
+          content="[ADMIN] Gérez le site grâce à votre interface d'administration"/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="Panneau d'administration">
+    <meta name="twitter:description"
+          content="[ADMIN] Gérez le site grâce à votre interface d'administration">
+{% endblock %}
 
 {% block body %}
     <h1 class="my-4">Administration</h1>

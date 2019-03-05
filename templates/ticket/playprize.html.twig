@@ -1,5 +1,25 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}{{ prize.name }}, tentez de gagner ce lot !{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="{{ prize.name }}, vous voulez gagner ce lot ?"/>
+    <meta property="og:description"
+          content="Venez jouer et tentez de gagner ce magnifique lot !"/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="{{ prize.name }}, vous voulez gagner ce lot ?">
+    <meta name="twitter:description"
+          content="Venez jouer et tentez de gagner ce magnifique lot !">
+{% endblock %}
 {% block body %}
     <h1 class="my-4">{{ prize.name }}</h1>
     <p class="lead">Déplacez le curseur ou notez dans le cadre le nombre de tickets que vous souhaitez jouer !</p>

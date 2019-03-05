@@ -1,5 +1,25 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Modification de vos données{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="Modification de vos données personnelles"/>
+    <meta property="og:description"
+          content="Modifiez les informations que vous souhaitez en remplissant le formulaire"/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="Modification de vos données personnelles">
+    <meta name="twitter:description"
+          content="Modifiez les informations que vous souhaitez en remplissant le formulaire">
+{% endblock %}
 
 {% block body %}
     <h1 class="my-4">Vous voulez modifier vos informations personnelles ?</h1>

@@ -1,4 +1,25 @@
 {% extends 'base.html.twig' %}
+{% block title %}Identifiez-vous{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="GL & HF, identifiez vous !"/>
+    <meta property="og:description"
+          content="Venez vous identifier ou même vous inscrire si ce n'est pas déjà fait !"/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="GL & HF, identifiez vous !">
+    <meta name="twitter:description"
+          content="Venez vous identifier ou même vous inscrire si ce n'est pas déjà fait !">
+{% endblock %}
 
 {% block body %}
     <h1 class="my-4">Connexion</h1>

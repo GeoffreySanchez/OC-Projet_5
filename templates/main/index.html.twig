@@ -1,4 +1,25 @@
 {% extends 'base.html.twig' %}
+{% block title %}GL & HF, la première tombola en ligne !{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="Bienvenue sur GL & HF"/>
+    <meta property="og:description"
+          content="GL & HF, le premier site qui vous fait gagner des lots high-tech gratuitement !"/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="GL & HF, le premier site de tombola en ligne gratuit !">
+    <meta name="twitter:description"
+          content="Bonjour et bienvenue sur GL & HF, créez-vous un compte gratuitement afin de commencer à jouer !">
+{% endblock %}
 
 {% block body %}
     <h1 class="my-4">Bienvenue sur GL & HF</h1>
@@ -13,7 +34,7 @@
             connaître un peut plus sur notre système.</p>
     {% endif %}
     <hr class="my-4">
-    <h2>Liste des lots en cours :</h2>
+    <h2><u>Liste des lots en cours :</u></h2>
     <div class="d-flex flex-wrap">
         {% for prize in prizes %}
             {% if prize.visible == true %}

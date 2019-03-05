@@ -139,4 +139,10 @@ class CouponCode
 
         return $this;
     }
+
+    public function disableCode()
+    {
+        $this->usable = 0;
+
+    }
 }

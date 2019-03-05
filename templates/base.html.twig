@@ -1,73 +1,83 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}{% endblock %}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="https://bootswatch.com/4/litera/bootstrap.css">
-        <link href="{{ asset("css/style.css") }}" type="text/css" rel="stylesheet"/>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="{{ path('main_page') }}">
-                <img  src="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png" alt="logoSite">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ path('main_page') }}">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('infos_page') }}">Plus d'infos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('showEndedPrize_page') }}">Tous les tirages terminés</a>
-                    </li>
-                </ul>
-                <ul id="secondNavbar" class="navbar-nav mr-5">
-                {% if not app.user %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('inscription_page') }}">Inscription</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('login_page') }}">Identification</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a href="{{ path('earnTicket_page') }}" class="nav-link" id="userTickets"> <i class="fas fa-ticket-alt rotate"></i> {{ app.user.tickets }} tickets <i class="fas fa-ticket-alt rotate"></i></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('user_page') }}">Mon compte</a>
-                    </li>
+<head>
+    <meta charset="UTF-8">
+    {% block reseauSociaux %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://bootswatch.com/4/litera/bootstrap.css">
+    <link href="{{ asset("css/style.css") }}" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{{ path('main_page') }}">
+        <img src="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png" alt="logoSite">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="navbar" class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ path('main_page') }}">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('infos_page') }}">Plus d'infos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('showEndedPrize_page') }}">Tous les tirages terminés</a>
+            </li>
+        </ul>
+        <ul id="secondNavbar" class="navbar-nav mr-5">
+            {% if not app.user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('inscription_page') }}">Inscription</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('login_page') }}">Identification</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a href="{{ path('earnTicket_page') }}" class="nav-link" id="userTickets"> <i
+                                class="fas fa-ticket-alt rotate"></i> {{ app.user.tickets }} tickets <i
+                                class="fas fa-ticket-alt rotate"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('user_page') }}">Mon compte</a>
+                </li>
                 {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('admin_page') }}">Administration</a>
                     </li>
                 {% endif %}
-                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('logout_page') }}">Déconnexion</a>
-                     </li>
-                {% endif %}
-                </ul>
-            </div>
-        </nav>
-        <div class="container">
-            {% block body %}{% endblock %}
-        </div>
-        <a href="javascript:" id="return-to-top">
-            <i class="fa fa-chevron-up"></i>
-        </a>
-        {% block javascripts %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('logout_page') }}">Déconnexion</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    {% block body %}{% endblock %}
+</div>
+<a href="javascript:" id="return-to-top">
+    <i class="fa fa-chevron-up"></i>
+</a>
 
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-            <script type="text/javascript" src="{{ asset('js/goToTopPage.js') }}"></script>
-        {% endblock %}
-    </body>
+<!-- Execute les scripts indispensables -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ asset('js/goToTopPage.js') }}"></script>
+{% block javascripts %}
+{% endblock %}
+</body>
 </html>
