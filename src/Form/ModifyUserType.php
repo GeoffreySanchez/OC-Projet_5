@@ -29,7 +29,6 @@ class ModifyUserType extends AbstractType
                 'invalid_message' => 'Votre code postal ne peut pas contenir de lettre',
                 'required' => false,
             ])
-            ->add('city', ChoiceType::class)
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
                 'invalid_message' => 'Les adresses emails doivent être identiques',

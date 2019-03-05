@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @UniqueEntity(
  *     fields = {"username"},
- *     message = "Cet utilisateur existe déjà"
+ *     message = "Cet utilisateur existe déjà",
  * )
  */
 class User implements UserInterface
@@ -31,37 +31,32 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(groups={"ajax"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(groups={"ajax"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(groups={"ajax"})
+     * @Assert\Length(min="8", minMessage="Votre pseudo est trop court, 8 caractères minimum")
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Email(groups={"ajax"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(groups={"ajax"})
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank(groups={"ajax"})
      */
     private $zipCode;
 
@@ -72,8 +67,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="8", minMessage="Votre mot de passe est trop court, 8 caractères minimum", groups={"ajax"})
-     * @Assert\NotBlank(groups={"ajax"})
+     * @Assert\Length(min="8", minMessage="Votre mot de passe est trop court, 8 caractères minimum")
      */
     private $password;
 

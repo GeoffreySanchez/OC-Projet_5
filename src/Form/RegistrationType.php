@@ -19,6 +19,7 @@ class RegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        //dump($options);
         $builder
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
@@ -28,7 +29,6 @@ class RegistrationType extends AbstractType
             ->add('zipCode', NumberType::class, [
                 'invalid_message' => 'Ce champ n\'accepte que les code postaux',
             ])
-            ->add('city', ChoiceType::class)
             ->add('password', PasswordType::class)
             ->add('confirm_password', PasswordType::class)
         ;
@@ -38,9 +38,7 @@ class RegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'validation_groups' => ['ajax'],
             'data_class' => User::class,
-
         ]);
     }
 }
