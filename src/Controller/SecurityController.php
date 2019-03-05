@@ -19,16 +19,18 @@ class SecurityController extends AbstractController
     /**
      * @Route("/inscription", name="inscription_page")
      */
-    public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer) {
+    public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer)
+    {
         $user = new User();
 
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
+        dump($form->getData());
         $getOptionCity = $form->all()['city']->getViewData();
         $modifyCity = $form->getData()->setCity($getOptionCity);
 
-        if($form->isSubmitted())
-        {
+        
+        if ($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
 
@@ -57,8 +59,8 @@ class SecurityController extends AbstractController
                     $this->renderView(
                     // templates/emails/registration.html.twig
                         'security/accountValidationEmail.html.twig', [
-                            'user' => $user
-                        ]),
+                        'user' => $user
+                    ]),
                     'text/html'
                 );
             $mailer->send($message);
@@ -73,25 +75,28 @@ class SecurityController extends AbstractController
     /**
      * @Route("/connexion", name="login_page")
      */
-    public function login() {
+    public function login()
+    {
         return $this->render('security/login.html.twig');
     }
 
     /**
      * @Route("/deconnexion", name="logout_page")
      */
-    public function logout() {
+    public function logout()
+    {
     }
 
     /**
      * @Route("/profile", name="user_page")
      */
-    public function profile() {
+    public function profile()
+    {
         //$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
 
         // Donne le bon rôle quand le compte est activé
-        $token = new UsernamePasswordToken($user,null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
 
         return $this->render('security/profile.html.twig', [
@@ -102,7 +107,8 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile/modification", name="profileModification_page")
      */
-    public function profileModification(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder) {
+    public function profileModification(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
+    {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $currentUser = $this->getUser();
 
@@ -110,11 +116,10 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         $getOptionCity = $form->all()['city']->getViewData();
         $modifyCity = $form->getData()->setCity($getOptionCity);
-        if($form->isSubmitted())
-        {
 
-            if($form->get('password')->getData())
-            {
+        if ($form->isSubmitted()) {
+
+            if ($form->get('password')->getData()) {
                 $hash = $encoder->encodePassword($currentUser, $form->getData()->getPassword());
                 $currentUser->setPassword($hash);
             }
@@ -131,7 +136,8 @@ class SecurityController extends AbstractController
     /**
      * @Route("/admin", name="admin_page")
      */
-    public function admin() {
+    public function admin()
+    {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
         return $this->render('security/admin.html.twig', [
@@ -142,7 +148,8 @@ class SecurityController extends AbstractController
     /**
      * @Route("/admin/user", name="adminUser_page")
      */
-    public function adminUser(UserRepository $repo) {
+    public function adminUser(UserRepository $repo)
+    {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $users = $repo->findAll();
 
@@ -154,12 +161,12 @@ class SecurityController extends AbstractController
     /**
      * @Route("admin/user/{id}", name="upgradeToAdmin_page")
      */
-    public function adminModifyRole(User $user, UserRepository $repo, EntityManagerInterface $manager, Request $request) {
+    public function adminModifyRole(User $user, UserRepository $repo, EntityManagerInterface $manager, Request $request)
+    {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $users = $repo->findAll();
 
-        if($action = null != $request->request->get("action"))
-        {
+        if ($action = null != $request->request->get("action")) {
             $user->handleUser($request->request->get("action"));
 
             $manager->persist($user);
@@ -175,15 +182,14 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile/activation/{key}", name="activation_page")
      */
-    public function accountActivation(EntityManagerInterface $manager, $key) {
+    public function accountActivation(EntityManagerInterface $manager, $key)
+    {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         /* @var \App\Entity\User $user */
         $user = $this->getUser();
         $userKey = $user->getConfirmKey();
-        if(!$user->getActive())
-        {
-            if($user->checkKey($key))
-            {
+        if (!$user->getActive()) {
+            if ($user->checkKey($key)) {
                 $user->activeUser();
                 $manager->flush();
 
@@ -193,9 +199,7 @@ class SecurityController extends AbstractController
                 );
                 return $this->redirectToRoute('user_page');
             }
-        }
-        elseif ($user->getActive() == true)
-        {
+        } elseif ($user->getActive() == true) {
             $this->addFlash(
                 'accountAlreadyActivate',
                 'Votre compte est déjà activé !');

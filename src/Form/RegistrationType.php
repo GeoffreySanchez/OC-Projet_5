@@ -19,7 +19,6 @@ class RegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //dump($options);
         $builder
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
@@ -39,6 +38,7 @@ class RegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'validation_groups' => ['ajax'],
             'data_class' => User::class,
 
         ]);

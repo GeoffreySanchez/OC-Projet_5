@@ -31,31 +31,37 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"ajax"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"ajax"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"ajax"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(groups={"ajax"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"ajax"})
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(groups={"ajax"})
      */
     private $zipCode;
 
@@ -66,13 +72,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="8", minMessage="Votre mot de passe est trop court, 8 caractères minimum")
-     * @Assert\NotBlank()
+     * @Assert\Length(min="8", minMessage="Votre mot de passe est trop court, 8 caractères minimum", groups={"ajax"})
+     * @Assert\NotBlank(groups={"ajax"})
      */
     private $password;
 
     /**
-     * @Assert\EqualTo(propertyPath="password", message="Votre mot de passe doit être identique")
+     * @Assert\EqualTo(propertyPath="password", message="Votre mot de passe doit être identique" )
      */
     public $confirm_password;
 

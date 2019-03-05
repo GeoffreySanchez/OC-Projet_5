@@ -45,7 +45,6 @@ class TicketController extends AbstractController
                 $ticket->setPrize($prize);
                 $ticket->setNumber();
                 $manager->persist($ticket);
-                $manager->flush();
             }
             $manager->flush();
 
