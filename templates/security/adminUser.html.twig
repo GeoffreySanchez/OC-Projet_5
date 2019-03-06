@@ -1,0 +1,84 @@
+{% extends  'base.html.twig' %}
+{% block title %}Administration des utilisateurs{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="Administration des membres"/>
+    <meta property="og:description"
+          content="[ADMIN] Cette page est faite pour administrer les droits des utilisateurs."/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="Administration des membres">
+    <meta name="twitter:description"
+          content="[ADMIN] Cette page est faite pour administrer les droits des utilisateurs.">
+{% endblock %}
+
+{% block body %}
+    <h1 class="my-4">Administration d'utilisateur</h1>
+    <p class="lead">Cette section vous permet de gérer les utilisateurs du site</p>
+    <section class="users">
+        <table class="table table-hover">
+            <tr scope="col">
+                <td>Id</td>
+                <td>Prénom</td>
+                <td>Nom</td>
+                <td>Nom d'utilisateur</td>
+                <td>Email</td>
+                <td>Adresse postale</td>
+                <td>Role</td>
+                <td>Actions</td>
+            </tr>
+            {% for user in users %}
+                <tr scope="col">
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.firstname }}</td>
+                    <td>{{ user.lastname }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.adresse }}</td>
+                    <td>
+                        {% for role in user.roles %}
+                            {% if role == "ROLE_ADMIN" %}
+                                Administrateur
+                            {% elseif role == "ROLE_USER" %}
+                                Membre activé
+                            {% elseif role == "ROLE_VISITOR" %}
+                                Membre désactivé
+                            {% elseif role == "ROLE_SUPER_ADMIN" %}
+                                Super administrateur
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <form action="{{ path("upgradeToAdmin_page", {"id" : user.id}) }}" method="post">
+                            {% if user.roles == ["ROLE_USER"] %}
+                                <button type="submit" name="action" value="upToAdmin" class="btn btn-outline-success">
+                                    Passer administrateur
+                                </button>
+                                <button type="submit" name="action" value="ban" class="btn btn-outline-danger">
+                                    Désactiver le compte
+                                </button>
+                            {% elseif user.roles == ["ROLE_VISITOR"] %}
+                                <button type="submit" name="action" value="valid" class="btn btn-outline-success">
+                                    Activer le compte
+                                </button>
+                            {% elseif user.roles == ["ROLE_ADMIN"] %}
+                                <button type="submit" name="action" value="downToUser" class="btn btn-outline-danger">
+                                    Passer membre
+                                </button>
+                            {% endif %}
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </section>
+{% endblock %}

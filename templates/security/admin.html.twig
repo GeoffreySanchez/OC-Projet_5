@@ -1,0 +1,49 @@
+{% extends  'base.html.twig'%}
+{% block title %}Panneau d'administration{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="Panneau d'administration"/>
+    <meta property="og:description"
+          content="[ADMIN] Gérez le site grâce à votre interface d'administration"/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="Panneau d'administration">
+    <meta name="twitter:description"
+          content="[ADMIN] Gérez le site grâce à votre interface d'administration">
+{% endblock %}
+
+{% block body %}
+    <h1 class="my-4">Administration</h1>
+    <p class="lead">Cette section vous permet de réaliser l'intégralité des fonctions d'administration de l'application et de ses membres.</p>
+    <div id="menu">
+        <a href="{{ path('adminUser_page') }}" class="linkPosition animated pulse">
+            <i class="fas fa-user fa-7x"></i>
+            Administration des membres
+        </a>
+        <a href="{{ path('viewPrize_page') }}" class="linkPosition animated pulse">
+            <i class="fas fa-gift fa-7x"></i>
+            Gérer les lots
+        </a>
+        <a href="{{ path('viewModel_page') }}" class="linkPosition animated pulse">
+            <i class="fas fa-boxes fa-7x"></i>
+            Gérer les modèles
+        </a>
+        <a href="{{ path('viewCouponCode_page') }}" class="linkPosition animated pulse">
+            <i class="fas fa-ticket-alt fa-7x"></i>
+            Gérer les coupons
+        </a>
+        <a href="{{ path('viewVideo_page') }}" class="linkPosition animated pulse">
+            <i class="fas fa-video fa-7x"></i>
+            Gérer les videos
+        </a>
+    </div>
+{% endblock %}

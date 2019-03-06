@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% block title %}Les lots terminés{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="Liste des lots terminés"/>
+    <meta property="og:description"
+          content="Consulter la liste des lots qui ont été gagnés"/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="Liste des lots terminés">
+    <meta name="twitter:description"
+          content="Consulter la liste des lots qui ont été gagnés">
+{% endblock %}
+
+{% block body %}
+    <h1 class="my-4">Liste des tirages terminés</h1>
+    <div class="d-flex flex-wrap">
+    {% for prize in prizes %}
+        {% if prize.visible == false %}
+        <div class="card mb-4 ml-auto mr-auto text-center d-inline-flex" id="{{ prize.id }}">
+            <h4 class="card-header">{{ prize.name }}</h4>
+            <div  class="">
+                <img class="w-100 max-w-img max-h-img" src="{{ prize.image }}" alt="Card image">
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Nombre de participant: {{ prize.nombreJoueur[0] }}</li>
+                <li class="list-group-item timer">Ce lot est terminé !</li>
+                <li class="list-group-item">
+                {% if prize.winner == null %}
+                    <p class="list-group-p">Aucun joueur enregistré avant le temps imparti</p>
+                    <p class="list-group-p">Dommage pour vous !</p>
+                {% else %}
+                    <p class="list-group-p">Ce lot à été remporté par: {{ prize.winner }}</p>
+                {% endif %}
+                </li>
+            </ul>
+        </div>
+        {% endif %}
+    {% endfor %}
+        </div>
+{% endblock %}

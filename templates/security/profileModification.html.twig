@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modification de vos données{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="Modification de vos données personnelles"/>
+    <meta property="og:description"
+          content="Modifiez les informations que vous souhaitez en remplissant le formulaire"/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="Modification de vos données personnelles">
+    <meta name="twitter:description"
+          content="Modifiez les informations que vous souhaitez en remplissant le formulaire">
+{% endblock %}
+
+{% block body %}
+    <h1 class="my-4">Vous voulez modifier vos informations personnelles ?</h1>
+    <p class="lead">Remplissez les champs dont vous voulez modifier les informations.</p>
+    <div class="card border-dark mb-3" style="max-width: 20rem;">
+        <div class="card-header">Vos informations actuelles</div>
+        <div class="card-body">
+            <h5 class="card-title">Adresse postale</h5>
+            <p class="card-text">{{ app.user.adresse }}</p>
+            <p>{{ app.user.zipCode }} {{ app.user.city }}</p>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Adresse email</h5>
+            <p class="card-text">{{ app.user.email }}</p>
+        </div>
+    </div>
+
+    {{ form_start(form) }}
+    {{ form_row(form.adresse, {'label': 'Adresse postale', 'attr': {'placeholder': 'Votre nouvelle adresse', 'value': ''}}) }}
+    {{ form_row(form.zipCode, {'id': 'zipCode', 'label': 'Code postal', 'attr': {'placeholder': 'Votre code postal', 'minlength': '5', 'maxlength': '5', 'onkeyup': 'city()', 'value': ''}}) }}
+    <div class="form-group">
+        <label for="cityName">Ville</label>
+        <select name="cityName" id="cityName" class="form-control" readonly></select>
+    </div>
+    <hr class="my-4">
+    {{ form_row(form.email, {'label': 'Adresse email', 'attr': {'placeholder': 'Votre nouvelle adresse email'}}) }}
+    <hr class="my-4">
+    {{ form_row(form.password, {'label': 'Mot de passe', 'attr': {'placeholder': 'Votre nouveau mot de passe'}}) }}
+    <button type="submit" class="btn btn-success">Valider</button>
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/ajax.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/formCity.js') }}"></script>
+{% endblock %}

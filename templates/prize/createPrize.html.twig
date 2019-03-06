@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block title %}Créer un lot{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="Création d'un lot"/>
+    <meta property="og:description"
+          content="[ADMIN] Vous pouvez créer de nouveaux lot grâce aux différents modèles."/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="Création d'un lot">
+    <meta name="twitter:description"
+          content="[ADMIN] Vous pouvez créer de nouveaux lot grâce aux différents modèles.">
+{% endblock %}
+
+{% block body %}
+    <h1 class="my-4">Créer un nouveau lot</h1>
+    <p class="lead">Pour créer un nouveau lot, veuillez selectionner un modèle dans le menu déroulant, vous pouvez
+        modifier manuellement certaines informations.</p>
+    <form id="createPrize" action="" method="post">
+        <div class="form-group">
+            <label for="exampleSelect2">Selectionnez un modèle</label>
+            <select class="form-control" onchange='changeAction(this.value); submit();'>
+                <option></option>
+                {% for model in models %}
+                    <option value="{{ path('createPrizeId_page', {'id': model.id}) }}">{{ model.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+    {% if modelPick == null %}
+    {% else %}
+        {{ form_start(form) }}
+        {{ form_row(form.name, {'label': 'Nom', 'attr': {'placeholder': 'Le nom du nouveau lot','value':  modelPick.name}}) }}
+        {{ form_row(form.category, {'label': 'Catégorie', 'attr': {'placeholder': 'La catégorie du nouveau lot', 'value': modelPick.category}}) }}
+        {{ form_row(form.image, {'label': 'Image', 'attr': {'placeholder': 'Le lien de l\'image du lot', 'value': modelPick.image}}) }}
+        {{ form_row(form.goal, {'label': 'Nombre de tickets max', 'attr': {'placeholder': 'Ajoutez un nombre de ticket à atteindre pour ce type de lot', 'value': modelPick.goal}}) }}
+        {{ form_row(form.duration, {'label': 'Nombre de jours max', 'attr': {'placeholder': 'Vous pouvez modifier la durée maximale du lot', 'value': modelPick.duration}}) }}
+        <button type="submit" class="btn btn-success">Ajouter</button>
+        {{ form_end(form) }}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function changeAction(val) {
+            document.getElementById('createPrize').setAttribute('action', val);
+        }
+    </script>
+{% endblock %}

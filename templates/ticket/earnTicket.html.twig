@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% block title %}Gagnez vos tickets{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="Venez gagner vos tickets !"/>
+    <meta property="og:description"
+          content="Venez gagner gratuitements vos tickets en saisissant un code ou alors en regardant de courtes vidéos publicitaires !"/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="Venez gagner vos tickets !">
+    <meta name="twitter:description"
+          content="Venez gagner gratuitements vos tickets en saisissant un code ou alors en regardant de courtes vidéos publicitaires !">
+{% endblock %}
+{% block body %}
+    <h1 class="my-4">Gagner des tickets</h1>
+    <p class="lead">Pour obtenir des tickets supplémentaires, vous pouvez entrer un code promo ou alors regarder des
+        vidéos publicitaires.</p>
+    <section id="codePromo">
+        <h5>Entrez votre code dans le formulaire ci-dessous</h5>
+        <form action="{{ path("useCouponCode_page") }}" method="post">
+            <div class="form-group  mt-4">
+                <label for="couponCode">votre code</label>
+                <div class="d-flex  flex-wrap">
+                    <input type="text" name="couponCode" id="couponCode"
+                           class="form-control col-lg-4 col-md-6 col-sm-7 col-8"
+                           placeholder="entrez votre code ici ...">
+                    {% for message in app.flashes('unusedCode') %}
+                        <div class="alert alert-dismissible alert-success col-lg-4 col-md-6 col-sm-7 col-8">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('usedCode') %}
+                        <div class="alert alert-dismissible alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Valider</button>
+        </form>
+    </section>
+
+    <hr class="my-4">
+
+    <section id="videoPublicitaire">
+        <h5>Regardez une vidéo afin de gagner vos tickets gratuitement</h5>
+        <div id="videoForTickets" class="d-flex justify-content-center mt-5">
+            {% for video in video %}
+                <div id="player" data-video-url="{{ video.url }}" data-video-id="{{ video.id }}"
+                     data-video-ticket="{{ video.ticket }}" data-video-path="{{ path('earnTicket_page') }}"></div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="http://www.youtube.com/player_api"></script>
+    <script type="text/javascript" src="{{ asset('js/youtubePlayer.js') }}"></script>
+{% endblock %}
+

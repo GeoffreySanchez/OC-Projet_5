@@ -1,0 +1,11 @@
+<h3>Bienvenue sur GL & HF</h3>
+<p>Bonjour {{ user.username }}, tu as été enregistré avec succès !</p>
+<p>Il te reste encore une petite étape afin de profiter plainement de toute les fonctionnalités de GL & HF</p>
+<div>
+    <p>Actives ton compte en suivant ce lien ou en le copiant dans ton navigateur préféré</p>
+    <p>{{ url('activation_page', {'key' : user.confirmKey}) }}</p>
+</div>
+<p>Merci !</p>
+
+
+

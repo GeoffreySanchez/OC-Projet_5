@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    {% if editMode %}
+        Modifier le modèle
+    {% else %}
+        Créer un nouveau modèle
+    {% endif %}
+{% endblock %}
+{% block reseauSociaux %}
+    {% if editMode %}
+        <meta property="og:url"
+              content="{{ app.request.uri }}"/>
+        <meta property="og:type"
+              content="website"/>
+        <meta property="og:title"
+              content="Modification d'un modèle"/>
+        <meta property="og:description"
+              content="[ADMIN] Vous voulez modifier un modèle de lot ? c'est ici que ça se passe"/>
+        <meta property="og:image"
+              content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+        <!-- Twitter -->
+        <meta name="twitter:card"
+              content="summary">
+        <meta name="twitter:title"
+              content="Modification d'un modèle">
+        <meta name="twitter:description"
+              content="[ADMIN] Vous voulez modifier un modèle de lot ? c'est ici que ça se passe">
+    {% else %}
+        <!-- Facebook -->
+        <meta property="og:url"
+              content="{{ app.request.uri }}"/>
+        <meta property="og:type"
+              content="creation"/>
+        <meta property="og:title"
+              content="Création d'un modèle"/>
+        <meta property="og:description"
+              content="[ADMIN] Vous voulez créer un modèle de lot ? c'est ici que ça se passe"/>
+        <meta property="og:image"
+              content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+        <!-- Twitter -->
+        <meta name="twitter:card"
+              content="summary">
+        <meta name="twitter:title"
+              content="Création d'un modèle">
+        <meta name="twitter:description"
+              content="[ADMIN] Vous voulez créer un modèle de lot ? c'est ici que ça se passe">
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <h1 class="my-4">
+        {% if editMode %}
+            Modifier le modèle
+        {% else %}
+            Créer un nouveau modèle
+        {% endif %}
+    </h1>
+    {{ form_start(form) }}
+    {{ form_row(form.name, {'label': 'Nom', 'attr': {'placeholder': 'Le nom du nouveau modèle'}}) }}
+    {{ form_row(form.category, {'label': 'Catégorie', 'attr': {'placeholder': 'La catégorie du nouveau modèle'}}) }}
+    {{ form_row(form.image, {'label': 'Image', 'attr': {'placeholder': 'Le lien de l\'image par défaut du lot'}}) }}
+    {{ form_row(form.goal, {'label': 'Nombre de ticket max', 'attr': {'placeholder': 'Ajoutez un nombre de ticket à atteindre pour ce type de lot'}}) }}
+    {{ form_row(form.duration, {'label': 'Durée', 'attr': {'placeholder': 'Durée maximale du lot avant d\'être retiré'}}) }}
+    <button type="submit" class="btn btn-success">
+        {% if editMode %}
+            Modifier
+        {% else %}
+            Créer
+        {% endif %}
+    </button>
+    {{ form_end(form) }}
+{% endblock %}

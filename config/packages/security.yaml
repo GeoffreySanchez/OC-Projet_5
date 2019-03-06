@@ -1,13 +1,31 @@
 security:
+    encoders:
+        App\Entity\User:
+            algorithm: argon2i
+            memory_cost: 16384
+            time_cost: 2
+            threads: 4
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory: { memory: ~ }
+        in_database:
+            entity:
+                class: App\Entity\User
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: true
+            provider: in_database
+
+            form_login:
+                login_path: login_page
+                check_path: login_page
+
+            logout:
+                path: logout_page
+                target: main_page
 
             # activate different ways to authenticate
 
@@ -19,6 +37,12 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
+    role_hierarchy:
+        ROLE_USER:        ROLE_VISITOR
+        ROLE_ADMIN:       [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/new/model, roles: ROLE_SUPER_ADMIN }
+         - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/profile, roles: ROLE_VISITOR }

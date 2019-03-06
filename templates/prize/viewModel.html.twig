@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% block title %}Liste des modèles{% endblock %}
+{% block reseauSociaux %}
+    <!-- Facebook -->
+    <meta property="og:url"
+          content="{{ app.request.uri }}"/>
+    <meta property="og:type"
+          content="website"/>
+    <meta property="og:title"
+          content="Liste des modèles"/>
+    <meta property="og:description"
+          content="[ADMIN] Vous pouvez consulter et administrer les modèles."/>
+    <meta property="og:image"
+          content="https://nsa40.casimages.com/img/2019/01/21/190121042431976526.png"/>
+    <!-- Twitter -->
+    <meta name="twitter:card"
+          content="summary">
+    <meta name="twitter:title"
+          content="Liste des modèles">
+    <meta name="twitter:description"
+          content="[ADMIN] Vous pouvez consulter et administrer les modèles.">
+{% endblock %}
+
+{% block body %}
+    <h1 class="my-4">Liste des modèles</h1>
+    <p class="lead">Sur cette page sont exposés tout les modèles. Vous pouvez modifier les modèles existants ou alors en créer de nouveaux.</p>
+    <section class="models">
+        <table class="table table-hover">
+            <tr>
+                <td>Id</td>
+                <td>Nom</td>
+                <td>Catégorie</td>
+                <td>Nombre de ticket requis</td>
+                <td>Durée maximale</td>
+                <td>Actions</td>
+            </tr>
+            {% for model in models %}
+                <tr>
+                    <td>{{ model.id }}</td>
+                    <td>{{ model.name }}</td>
+                    <td>{{ model.category }}</td>
+                    <td>{{ model.goal }}</td>
+                    <td>{{ model.duration }} jours</td>
+                    <td>
+                        <form action="{{ path('modifyModel_page', {'id' : model.id}) }}" method="post">
+                            <button class="btn btn-warning" type="submit" name="action" value="modifyModel">Modifier le modèle</button>
+                            <button class="btn btn-danger" type="submit" name="action" value="deleteModel" onclick="return confirm('Etes vous sûr de vouloir supprimer ce modèle ?')">Supprimer le modèle</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <form action="{{ path('newModel_page') }}" method="post">
+            <button  class="btn btn-success" type="submit" name="newmodel">Créer un modèle</button>
+        </form>
+    </section>
+{% endblock %}
