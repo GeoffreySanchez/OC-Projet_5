@@ -48,14 +48,10 @@
                     {{ message }}
                 </div>
             {% endfor %}
-            <ul>
-                <li>
-                    <a href="{{ path('profileModification_page') }}">Modifier mes informations personnelles</a>
-                </li>
-                <li>
-                    <a href="{{ path('earnTicket_page') }}">Obtenir des tickets</a>
-                </li>
-            </ul>
+            <div id="menu">
+                <a href="{{ path('profileModification_page') }}" class="linkPosition animated pulse"><i class="fas fa-user fa-7x"></i>Modifier mes informations personnelles</a>
+                <a href="{{ path('earnTicket_page') }}" class="linkPosition animated pulse"><i class="fas fa-ticket-alt fa-7x"></i>Obtenir des tikets</a>
+            </div>
         </div>
     {% endif %}
 {% endblock %}

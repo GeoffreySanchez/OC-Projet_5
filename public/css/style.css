@@ -14,6 +14,10 @@
     font-family: Georgia;
 }
 
+tr td{
+    text-align: center;
+}
+
 /** Style du bouton permettant le retour en top page **/
 #return-to-top {
     position: fixed;
@@ -158,4 +162,32 @@ input[type=range]::-ms-range-track {
 
 #userTickets {
     color: #02B875;
+}
+
+
+
+/********/
+/* USER */
+/********/
+
+.linkPosition {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 50px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    width: 300px;
+}
+
+.linkPosition:hover {
+    text-decoration: none;
+}
+
+#menu {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
 }
