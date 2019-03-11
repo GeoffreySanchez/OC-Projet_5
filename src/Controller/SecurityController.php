@@ -19,7 +19,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/inscription", name="inscription_page")
      */
-    public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer)
+    public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
         $user = new User();
 
@@ -52,18 +52,20 @@ class SecurityController extends AbstractController
                 'Bienvenue ! votre compte a été créé avec succès');
 
             // Envoie par email le lien pour que l'utilisateur puisse valider son compte
-            $message = (new \Swift_Message('Activation de votre compte GL & HF'))
-                ->setFrom('projet5@geoffreysanchez-book.fr')
-                ->setTo($user->getEmail())
-                ->setBody(
-                    $this->renderView(
-                    // templates/emails/registration.html.twig
-                        'security/accountValidationEmail.html.twig', [
-                        'user' => $user
-                    ]),
-                    'text/html'
-                );
-            $mailer->send($message);
+            $to = $user->getEmail();
+            $subject = 'Activation de votre compte GL & HF';
+            $message = $this->renderView(
+                'security/accountValidationEmail.html.twig', [
+                'user' => $user
+            ]);
+            $headers = array(
+                'From' => 'projet5@geoffreysanchez-book.fr',
+                'Reply-To' => 'projet5@geoffreysanchez-book.fr',
+                'X-Mailer' => 'PHP/' . phpversion(),
+                'Content-Type' => 'text/html',
+            );
+            // fonction qui envoie le mail
+            mail($to, $subject, $message, $headers);
 
             return $this->redirectToRoute('user_page');
         }
