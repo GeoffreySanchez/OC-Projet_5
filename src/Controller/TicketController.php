@@ -28,8 +28,7 @@ class TicketController extends AbstractController
         $ticketUserPlay = $request->request->get('result');
 
         // Si des tickets sont joués
-        if($ticketUserPlay != 0)
-        {
+        if ($ticketUserPlay != 0) {
             // Retire les tickets joués par l'utilisateur
             $deductionUserticket = $user->getTickets() - $ticketUserPlay;
             $user->setTickets($deductionUserticket);
@@ -38,8 +37,7 @@ class TicketController extends AbstractController
             $prize->setCurrentTicket($ajoutTicket);
 
             // boucle qui créé le nombre de ticket joué par l'utilisateur
-            for($i = 0; $i <= $ticketUserPlay -1 ; $i++)
-            {
+            for ($i = 0; $i <= $ticketUserPlay - 1; $i++) {
                 $ticket = new Ticket();
                 $ticket->setUser($user);
                 $ticket->setPrize($prize);
@@ -49,13 +47,12 @@ class TicketController extends AbstractController
             $manager->flush();
 
             // Tirage au sort du gagnant du lot quand celui-ci atteint le nombre de ticket maximal
-            if($prize->getCurrentTicket() == $prize->getGoal() && $prize->getVisible() == 1)
-            {
+            if ($prize->getCurrentTicket() == $prize->getGoal() && $prize->getVisible() == 1) {
                 $collectTickets = $tickets->findBy(array('prize' => $prize->getId()));
                 $randWinnerTicket = array_rand($collectTickets, 1);
                 $winner = $tickets->find($randWinnerTicket)->getUser()->getUsername();
 
-                $winnerIs = $prize->winnerIs($winner);
+                $prize->winnerIs($winner);
                 $manager->flush();
 
                 return $this->redirectToRoute('showEndedPrize_page');
@@ -79,11 +76,10 @@ class TicketController extends AbstractController
         $idVideoWatched = $request->request->get('winTickets');
         $TicketVideoWatched = $video->findBy(array('id' => $idVideoWatched));
 
-        if($idVideoWatched != null)
-        {
+        if ($idVideoWatched != null) {
             // Ajoute les tickets gagné avec la vidéo à l'utilisateur
             $earnTickets = $user->getTickets() + $TicketVideoWatched[0]->getTicket();
-            $addTicketsToUser = $user->setTickets($earnTickets);
+            $user->setTickets($earnTickets);
 
             $manager->flush();
 

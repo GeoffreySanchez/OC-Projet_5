@@ -1,7 +1,5 @@
 var player;
-
-function onYouTubePlayerAPIReady()
-{
+function onYouTubePlayerAPIReady() {
     var dataUrl = document.querySelector('#player');
     var videoUrl = dataUrl.dataset.videoUrl;
 
@@ -20,15 +18,13 @@ function onYouTubePlayerAPIReady()
 }
 
 // Lorsque la vidéo est fini
-function onPlayerStateChange(event)
-{
+function onPlayerStateChange(event) {
     var dataUrl = document.querySelector('#player');
     var videoId = dataUrl.dataset.videoId;
     var videoTicket = dataUrl.dataset.videoTicket;
     var videoPath = dataUrl.dataset.videoPath;
 
-    if (event.data === 0)
-    {
+    if (event.data === 0) {
         $RemoveVideoDiv = document.getElementById('player').remove();
         var divVideo = document.getElementById('videoForTickets');
 
@@ -40,7 +36,7 @@ function onPlayerStateChange(event)
         document.getElementById('videoForTickets').appendChild(f);
         //création du boutton
         var b = document.createElement("button");
-        var bText = document.createTextNode('Gagner '+ videoTicket +' tickets');
+        var bText = document.createTextNode('Gagner ' + videoTicket + ' tickets');
         b.setAttribute('type', "submit");
         b.setAttribute('class', "btn btn-success");
         b.setAttribute('name', "winTickets");

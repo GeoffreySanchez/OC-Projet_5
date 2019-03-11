@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
 
         // Ajoute la ville selectionné par l'utilisateur dans le formulaire
         $getOptionCity = $request->request->get('cityName');
-        $modifyCity = $user->setCity($getOptionCity);
+        $user->setCity($getOptionCity);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
@@ -119,7 +119,7 @@ class SecurityController extends AbstractController
 
         // Ajoute la ville selectionné par l'utilisateur dans le formulaire
         $getOptionCity = $request->request->get('cityName');
-        $modifyCity = $currentUser->setCity($getOptionCity);
+        $currentUser->setCity($getOptionCity);
 
         if ($form->isSubmitted()) {
 
@@ -191,7 +191,7 @@ class SecurityController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         /* @var \App\Entity\User $user */
         $user = $this->getUser();
-        $userKey = $user->getConfirmKey();
+        $user->getConfirmKey();
         if (!$user->getActive()) {
             if ($user->checkKey($key)) {
                 $user->activeUser();

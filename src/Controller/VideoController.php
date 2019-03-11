@@ -17,14 +17,12 @@ class VideoController extends AbstractController
      */
     public function viewVideo(Request $request, VideoRepository $video)
     {
-        $videos = $video->findAll();
-        if($request->request->get("newVideo"))
-        {
+        if ($request->request->get("newVideo")) {
             return $this->redirectToRoute("newVideo_page");
         }
 
         return $this->render('video/viewVideo.html.twig', [
-            'videos' => $videos,
+            'videos' => $video->findAll(),
         ]);
     }
 
@@ -34,13 +32,11 @@ class VideoController extends AbstractController
      */
     public function manageVideo(Request $request, EntityManagerInterface $manager, Video $video = null)
     {
-        if(!$video)
-        {
+        if (!$video) {
             $video = new Video();
         }
 
-        if($request->request->get("action") == "deleteVideo")
-        {
+        if ($request->request->get("action") == "deleteVideo") {
             $manager->remove($video);
             $manager->flush();
 
@@ -50,8 +46,7 @@ class VideoController extends AbstractController
         $form = $this->createForm(NewVideoType::class, $video);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager->persist($video);
             $manager->flush();
             return $this->redirectToRoute('viewVideo_page');

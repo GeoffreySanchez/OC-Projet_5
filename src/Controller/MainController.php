@@ -15,34 +15,24 @@ class MainController extends AbstractController
      * @Route("/", name="main_page")
      * @Route("/tirages", name="showEndedPrize_page")
      */
-    public function showPrize(EntityManagerInterface $manager,PrizeRepository $prize, TicketRepository $ticket, Request $request)
+    public function showPrize(EntityManagerInterface $manager, PrizeRepository $prize, TicketRepository $ticket, Request $request)
     {
         $route = $request->attributes->get('_route');
         $prizes = $prize->findAll();
         $tickets = $ticket->findAll();
 
-        foreach ($prizes as $prize)
-        {
+        foreach ($prizes as $prize) {
             $prize->endPrize();
             $currentPlayer = array_values($ticket->getDifferentUsers($prize->getId()) [0]);
             $prize->nombreJoueur($currentPlayer);
 
             $manager->flush();
         }
-        if ($route == 'showEndedPrize_page')
-        {
-            return $this->render('main/showEndedPrize.html.twig', [
-                'prizes' => $prizes,
-                'tickets' => $tickets
-            ]);
-        }
-        else
-        {
-            return $this->render('main/index.html.twig', [
-                'prizes' => $prizes,
-                'tickets' => $tickets
-            ]);
-        }
+        $view = ($route == 'showEndedPrize_page') ? 'showEndedPrize' : 'index';
+        return $this->render('main/' . $view . '.html.twig', [
+            'prizes' => $prizes,
+            'tickets' => $tickets
+        ]);
     }
 
     /**

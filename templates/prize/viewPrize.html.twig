@@ -23,7 +23,8 @@
 
 {% block body %}
     <h1 class="my-4">Liste des lots</h1>
-    <p class="lead">Sur cette page sont exposés tout les lots. Vous pouvez modifier les lots existant ou alors en créer de nouveaux.</p>
+    <p class="lead">Sur cette page sont exposés tout les lots. Vous pouvez modifier les lots existant ou alors en créer
+        de nouveaux.</p>
     <section class="prize">
         <table class="table table-hover">
             <tr>
@@ -55,15 +56,20 @@
                     </td>
                     <td>
                         <form action="{{ path('modifyPrize_page', {'id' : prize.id}) }}" method="post">
-                            <button class="btn btn-warning" type="submit" name="action" value="modifyPrize">Modifier le lot</button>
-                            <button class="btn btn-danger" type="submit" name="action" value="deletePrize" onclick="return confirm('Etes vous sûr de vouloir supprimer ce lot ?')">Supprimer le lot</button>
+                            <button class="btn btn-warning" type="submit" name="action" value="modifyPrize">Modifier le
+                                lot
+                            </button>
+                            <button class="btn btn-danger" type="submit" name="action" value="deletePrize"
+                                    onclick="return confirm('Etes vous sûr de vouloir supprimer ce lot ?')">Supprimer le
+                                lot
+                            </button>
                         </form>
                     </td>
                 </tr>
             {% endfor %}
         </table>
         <form action="{{ path('createPrize_page') }}" method="post">
-            <button  class="btn btn-success" type="submit" name="newmodel">Créer un lot</button>
+            <button class="btn btn-success" type="submit" name="newmodel">Créer un lot</button>
         </form>
     </section>
 {% endblock %}

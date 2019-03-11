@@ -21,14 +21,12 @@ class PrizeController extends AbstractController
      */
     public function viewModel(ModelPrizeRepository $model, Request $request)
     {
-        $models = $model->findAll();
-        if($request->request->get("newmodel"))
-        {
+        if ($request->request->get("newmodel")) {
             return $this->redirectToRoute("newModel_page");
         }
 
         return $this->render('prize/viewModel.html.twig', [
-            'models' => $models,
+            'models' => $model->findAll(),
         ]);
     }
 
@@ -38,13 +36,11 @@ class PrizeController extends AbstractController
      */
     public function manageModel(Request $request, EntityManagerInterface $manager, ModelPrize $model = null)
     {
-        if(!$model)
-        {
+        if (!$model) {
             $model = new ModelPrize();
         }
 
-        if($request->request->get("action") == "deleteModel")
-        {
+        if ($request->request->get("action") == "deleteModel") {
             $manager->remove($model);
             $manager->flush();
 
@@ -54,8 +50,7 @@ class PrizeController extends AbstractController
         $form = $this->createForm(NewModelPrizeType::class, $model);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager->persist($model);
             $manager->flush();
             return $this->redirectToRoute('viewModel_page');
@@ -72,9 +67,8 @@ class PrizeController extends AbstractController
      */
     public function viewPrize(PrizeRepository $prizes)
     {
-        $allPrize = $prizes->findAll();
         return $this->render('prize/viewPrize.html.twig', [
-            'prizes' => $allPrize,
+            'prizes' => $prizes->findAll(),
         ]);
     }
 
@@ -87,21 +81,18 @@ class PrizeController extends AbstractController
         $models = $model->findAll();
         $modelPick = null;
 
-        if ($request->attributes->get('id'))
-        {
+        if ($request->attributes->get('id')) {
             $modelPick = $model->find($request->attributes->get('id'));
         }
 
-        if(!$prize)
-        {
+        if (!$prize) {
             $prize = new Prize();
         }
 
         $form = $this->createForm(CreatePrizeType::class, $prize);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $prize->setEndDate(null);
             $manager->persist($prize);
             $manager->flush();
@@ -122,15 +113,13 @@ class PrizeController extends AbstractController
     {
         $form = $this->createForm(ModifyPrizeType::class, $prize);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager->persist($prize);
             $manager->flush();
             return $this->redirectToRoute('viewPrize_page');
         }
 
-        if($request->request->get('action') == 'deletePrize')
-        {
+        if ($request->request->get('action') == 'deletePrize') {
             $manager->remove($prize);
             $manager->flush();
             return $this->redirectToRoute('viewPrize_page');
