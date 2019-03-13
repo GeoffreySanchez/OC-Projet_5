@@ -25,7 +25,7 @@
     <h1 class="my-4">Bienvenue sur votre espace privé {{ user.username }}</h1>
     {% if user.active == false %}
         <p class="lead">Veuillez valider votre compte avec le lien reçu par mail pour pouvoir utiliser l'intégralité des
-            fonctionnalité du site.</p>
+            fonctionnalités du site.</p>
         {% for message in app.flashes('accountCreationSuccess') %}
             <div class="alert alert-dismissible alert-success">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -34,8 +34,8 @@
         {% endfor %}
     {% else %}
         <div>
-            <p class="lead">Avec votre espace personnelle, vous avez la possibilité de modifier vos données personnelles
-                ou acheter des tickets supplémentaires.</p>
+            <p class="lead">Avec votre espace personnel, vous avez la possibilité de modifier vos données personnelles
+                ou gagner des tickets supplémentaires.</p>
             {% for message in app.flashes('accountActivation') %}
                 <div class="alert alert-dismissible alert-success">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -52,7 +52,7 @@
                 <a href="{{ path('profileModification_page') }}" class="linkPosition animated pulse"><i
                             class="fas fa-user fa-7x"></i>Modifier mes informations personnelles</a>
                 <a href="{{ path('earnTicket_page') }}" class="linkPosition animated pulse"><i
-                            class="fas fa-ticket-alt fa-7x"></i>Obtenir des tikets</a>
+                            class="fas fa-ticket-alt fa-7x"></i>Obtenir des tickets</a>
             </div>
         </div>
     {% endif %}

@@ -26,7 +26,6 @@ function onPlayerStateChange(event) {
 
     if (event.data === 0) {
         $RemoveVideoDiv = document.getElementById('player').remove();
-        var divVideo = document.getElementById('videoForTickets');
 
         //Création du formulaire
         var f = document.createElement("form");

@@ -23,13 +23,13 @@
 
 {% block body %}
     <h1 class="my-4">Modification du lot</h1>
-    <p class="lead">Pour modifier une ou plusieurs données de ce lot, veuillez remplacer les données présentent dans les
+    <p class="lead">Pour modifier une ou plusieurs données de ce lot, veuillez remplacer les données présentes dans les
         champs voulus</p>
 
     {{ form_start(form) }}
     {{ form_row(form.name, {'label': 'Nom', 'attr': {'placeholder': 'Le nouveau nom du lot'}}) }}
-    {{ form_row(form.currentTicket, {'label': 'Nombre de ticket actuellement joués', 'attr': {'placeholder': 'La catégorie du nouveau lot'}}) }}
-    {{ form_row(form.goal, {'label': 'Nombre de ticket à atteindre', 'attr': {'placeholder': 'Le lien de l\'image du lot'}}) }}
+    {{ form_row(form.currentTicket, {'label': 'Nombre de tickets actuellement joués', 'attr': {'placeholder': 'La catégorie du nouveau lot'}}) }}
+    {{ form_row(form.goal, {'label': 'Nombre de tickets à atteindre', 'attr': {'placeholder': 'Le lien de l\'image du lot'}}) }}
     {{ form_row(form.endDate, {'label': 'Date de fin', 'attr': {'placeholder': 'Ajoutez un nombre de ticket à atteindre pour ce type de lot'}}) }}
     {{ form_row(form.image, {'label': 'Lien de l\'image', 'attr': {'placeholder': 'Vous pouvez modifier la durée maximale du lot'}}) }}
     {{ form_row(form.visible, {'label': 'Visible pour les visiteurs', 'attr': {'placeholder': 'Vous pouvez modifier la durée maximale du lot'}}) }}
